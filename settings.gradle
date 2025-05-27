@@ -21,3 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "StudentHome"
 include ':app'
+include ':uicompose'
+include ':data'
+include ':domain'
