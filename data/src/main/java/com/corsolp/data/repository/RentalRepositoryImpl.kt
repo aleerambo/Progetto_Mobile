@@ -5,12 +5,14 @@ import com.corsolp.domain.repository.RentalRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class RentalRepositoryImpl: RentalRepository {
     private val scope = CoroutineScope(Dispatchers.Main)
 
     private val _rentalTypeList = MutableStateFlow<List<RentalType>>(listOf())
+    override val rentalTypeList: StateFlow<List<RentalType>> = _rentalTypeList
 
     private val rentalTypes = listOf(
         RentalType.Room(
