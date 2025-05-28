@@ -1,18 +1,16 @@
 package com.corsolp.studenthome
 
-import android.os.Bundle
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.corsolp.studenthome.databinding.ActivityMainBinding
+import android.app.Application
+import com.corsolp.data.di.RepositoryProviderImpl
+import com.corsolp.domain.di.UseCaseProvider
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : Application() {
+    override fun onCreate() {
+        super.onCreate()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val txtTitle = binding.txtTitle
+        // Punto di ingresso dell'applicazione
+        UseCaseProvider.setup(
+            repositoryProvider = RepositoryProviderImpl()
+        )
     }
 }
