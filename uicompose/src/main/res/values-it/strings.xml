@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="room">Stanza</string>
+    <string name="apartment">Appartamento</string>
+    <string name="bed">Posto letto</string>
+</resources>

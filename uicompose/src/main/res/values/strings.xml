@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="room">Room</string>
+    <string name="apartment">Apartment</string>
+    <string name="bed">Bed Space</string>
+</resources>
