@@ -1,4 +1,4 @@
-package com.corsolp.ui.compose.screens.home
+package com.corsolp.uicompose.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

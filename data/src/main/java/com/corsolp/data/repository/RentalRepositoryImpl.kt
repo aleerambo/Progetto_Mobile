@@ -1,5 +1,6 @@
 package com.corsolp.data.repository
 
+import com.corsolp.data.remote.StudentHomeApi
 import com.corsolp.domain.models.RentalType
 import com.corsolp.domain.repository.RentalRepository
 import kotlinx.coroutines.CoroutineScope
@@ -8,7 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class RentalRepositoryImpl: RentalRepository {
+class RentalRepositoryImpl(
+    private val studentHomeApi: StudentHomeApi
+): RentalRepository {
     private val scope = CoroutineScope(Dispatchers.Main)
 
     private val _rentalTypeList = MutableStateFlow<List<RentalType>>(listOf())
@@ -46,6 +49,8 @@ class RentalRepositoryImpl: RentalRepository {
 
     override fun fetchRentalTypeList() {
         scope.launch {
+            val getAllRentalPosts = studentHomeApi.getAllRentalPosts()
+            println("getAllRentalPosts: $getAllRentalPosts")
             _rentalTypeList.emit(rentalTypes)
         }
     }
