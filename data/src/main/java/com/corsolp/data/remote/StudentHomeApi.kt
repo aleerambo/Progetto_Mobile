@@ -6,6 +6,9 @@ import com.corsolp.data.remote.models.GetAnnunciFiltri
 import com.corsolp.data.remote.models.GetAnnunciNoAttivi
 import com.corsolp.data.remote.models.GetAuthProfile
 import com.corsolp.data.remote.models.GetNews
+import com.corsolp.data.remote.models.GetPreferiti
+import com.corsolp.data.remote.models.GetQuartieri
+import com.corsolp.data.remote.models.GetTipiAnnuncio
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -65,12 +68,16 @@ interface StudentHomeApi {
     ): List<GetAllAnnunci>
 
     @GET("/api/tipi-annuncio")
+    suspend fun getTipiAnnuncio(): List<GetTipiAnnuncio>
 
     @GET("/api/servizi")
+    suspend fun getServizi(): List<GetServizi>
 
     @GET("/api/quartieri")
+    suspend fun getQuartieri(): List<GetQuartieri>
 
     @GET("/api/preferiti")
+    suspend fun getPreferiti(): List<GetPreferiti>
 
 
     // /api/auth/register
