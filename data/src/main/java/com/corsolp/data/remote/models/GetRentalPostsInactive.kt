@@ -2,7 +2,7 @@ package com.corsolp.data.remote.models
 
 import com.squareup.moshi.Json
 
-data class GetAnnunciNoAttivi (
+data class GetRentalPostsInactive (
 
   @Json(name = "id"                         ) var id                       : Int?    = null,
   @Json(name = "cognome"                    ) var cognome                  : String? = null,

@@ -2,7 +2,7 @@ package com.corsolp.data.remote.models
 
 import com.squareup.moshi.Json
 
-data class GetAnnunciFiltri (
+data class GetAllRentalPosts (
 
   @Json(name = "id"                         ) var id                       : Int?    = null,
   @Json(name = "cognome"                    ) var cognome                  : String? = null,
@@ -19,7 +19,6 @@ data class GetAnnunciFiltri (
   @Json(name = "piano"                      ) var piano                    : Int?    = null,
   @Json(name = "indirizzo"                  ) var indirizzo                : String? = null,
   @Json(name = "foto_annuncio"              ) var fotoAnnuncio             : String? = null,
-  @Json(name = "thumbnails"                 ) var thumbnails               : String? = null,
   @Json(name = "quartiere_zona_descrizione" ) var quartiereZonaDescrizione : String? = null,
   @Json(name = "servizi"                    ) var servizi                  : String? = null,
   @Json(name = "contratto_max"              ) var contrattoMax             : Int?    = null,

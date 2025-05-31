@@ -2,7 +2,7 @@ package com.corsolp.data.remote.models
 
 import com.squareup.moshi.Json
 
-data class GetPreferiti (
+data class GetFavourites (
 
   @Json(name = "id"            ) var id           : Int?    = null,
   @Json(name = "utente_id"     ) var utenteId     : Int?    = null,
