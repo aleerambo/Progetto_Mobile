@@ -13,6 +13,7 @@ class RetrofitClient {
     private val headersInterceptor = Interceptor { chain ->
         val request = chain.request().newBuilder()
             .addHeader("Content-Type", "application/json")
+            //.addHeader()
             .build()
         chain.proceed(request)
     }
@@ -33,7 +34,7 @@ class RetrofitClient {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    val studentHomeApi by lazy {
-        retrofit.create(StudentHomeApi::class.java)
+    val rentApi by lazy {
+        retrofit.create(RentApi::class.java)
     }
 }

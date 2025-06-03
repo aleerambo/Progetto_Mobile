@@ -1,18 +1,15 @@
 package com.corsolp.data.remote
 
-import com.corsolp.data.remote.models.GetAllRentalPosts
-import com.corsolp.data.remote.models.GetRentalPostsByID
-import com.corsolp.data.remote.models.GetRentalPostsFilter
-import com.corsolp.data.remote.models.GetRentalPostsInactive
-import com.corsolp.data.remote.models.GetAuthProfile
-import com.corsolp.data.remote.models.GetNews
-import com.corsolp.data.remote.models.GetFavourites
-import com.corsolp.data.remote.models.GetAreas
-import com.corsolp.data.remote.models.GetServices
-import com.corsolp.data.remote.models.GetRentalTypePosts
-import com.corsolp.data.remote.models.PostLogin
-import com.corsolp.data.remote.models.PostFavourites
-import com.corsolp.data.remote.models.PostRegister
+import com.corsolp.data.remote.models.rent.GetAllRentalPosts
+import com.corsolp.data.remote.models.rent.GetRentalPostsByID
+import com.corsolp.data.remote.models.rent.GetRentalPostsFilter
+import com.corsolp.data.remote.models.rent.GetRentalPostsInactive
+import com.corsolp.data.remote.models.rent.GetNews
+import com.corsolp.data.remote.models.rent.GetFavourites
+import com.corsolp.data.remote.models.rent.GetAreas
+import com.corsolp.data.remote.models.rent.GetServices
+import com.corsolp.data.remote.models.rent.GetRentalTypePosts
+import com.corsolp.data.remote.models.rent.PostFavourites
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -22,7 +19,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 
-interface StudentHomeApi {
+interface RentApi {
     @GET("/api/news")
     suspend fun getNews(): List<GetNews>
 
@@ -31,14 +28,11 @@ interface StudentHomeApi {
         @Path("id") id: Int
     ): GetNews
 
-    @GET("/api/auth/profile")
-    suspend fun getAuthProfile(): GetAuthProfile
-
     @GET("/api/annunci")
     suspend fun getAllRentalPosts(): List<GetAllRentalPosts>
 
     @GET("/api/lastannunci")
-    suspend fun lastRentalPosts(): List<GetAllRentalPosts>
+    suspend fun getLastRentalPosts(): List<GetAllRentalPosts>
 
     @GET("/api/annunci/{id}")
     suspend fun getRentalPostsById(
@@ -88,22 +82,6 @@ interface StudentHomeApi {
 
     @GET("/api/preferiti")
     suspend fun getFavourites(): List<GetFavourites>
-
-
-    @Headers("Content-Type: application/json")
-    @POST("/api/auth/register")
-    suspend fun postRegister(
-        @Body user: PostRegister
-    ): Int
-
-    @Headers("Content-Type: application/json")
-    @POST("/api/auth/login")
-    suspend fun postLogin(
-        @Body user: PostLogin
-    ): Int
-
-    @POST("/api/auth/logout")
-    suspend fun postLogout(): Int
 
     @Headers("Content-Type: application/json")
     @POST("/api/preferiti")

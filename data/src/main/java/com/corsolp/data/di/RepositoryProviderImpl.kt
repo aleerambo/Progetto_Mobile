@@ -9,6 +9,6 @@ class RepositoryProviderImpl: RepositoryProvider {
     private val retrofitClient = RetrofitClient()
 
     override val rentalRepository: RentalRepository = RentalRepositoryImpl(
-        studentHomeApi = retrofitClient.studentHomeApi
+        rentApi = retrofitClient.rentApi
     )
 }
