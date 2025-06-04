@@ -19,12 +19,19 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class RentalRepositoryImpl(
+<<<<<<< HEAD
     private val rentApi: RentApi
 ) : RentalRepository {
+=======
+    private val studentHomeApi: StudentHomeApi
+) : RentalRepository {
+    private val scope = CoroutineScope(Dispatchers.Main)
+>>>>>>> 4812a87f625f867d2f1ae227d1a319e3d64ec6ed
 
     // Usare un scope su IO per tutte le chiamate di rete
     private val scope = CoroutineScope(Dispatchers.IO)
 
+<<<<<<< HEAD
     // 1) Flussi “live”
     private val _newsList             = MutableStateFlow<List<News>>(emptyList())
     override fun fetchNewsList(): StateFlow<List<News>> = _newsList
@@ -361,3 +368,47 @@ class RentalRepositoryImpl(
         )
     }
 }
+=======
+    override fun fetchRentalTypeList() {
+        scope.launch {
+            val getLastRentalPosts = studentHomeApi.getLastRentalPosts()
+            println("getLastRentalPosts: $getLastRentalPosts")
+
+            val rentalTypes = getLastRentalPosts.map { data ->
+                when (data.tipologia) {
+                    "stanza" -> RentalType.Room(
+                        roomDescription = data.descrizione ?: "",
+                        roomPictureUrl = data.fotoAnnuncio ?: "",
+                        roomRooms = data.locali ?: 0,
+                        roomSurface = data.mq ?: 0,
+                        roomFloor = data.piano ?: 0,
+                        roomServices = data.servizi?.split(',') ?: listOf(),
+                        roomPrice = data.prezzo?.toDouble() ?: 0.0
+                    )
+                    "appartamento" -> RentalType.Apartment(
+                        apartmentDescription = data.descrizione ?: "",
+                        apartmentPictureUrl = data.fotoAnnuncio ?: "",
+                        apartmentRooms = data.locali ?: 0,
+                        apartmentSurface = data.mq ?: 0,
+                        apartmentFloor = data.piano ?: 0,
+                        apartmentServices = data.servizi?.split(',') ?: listOf(),
+                        apartmentPrice = data.prezzo?.toDouble() ?: 0.0
+                    )
+                    "posto letto" -> RentalType.Bed(
+                        bedSpaceDescription = data.descrizione ?: "",
+                        bedSpacePictureUrl = data.fotoAnnuncio ?: "",
+                        bedSpaceRooms = data.locali ?: 0,
+                        bedSpaceSurface = data.mq ?: 0,
+                        bedSpaceFloor = data.piano ?: 0,
+                        bedSpaceServices = data.servizi?.split(',') ?: listOf(),
+                        bedSpacePrice = data.prezzo?.toDouble() ?: 0.0
+                    )
+                    else -> throw IllegalArgumentException("Unknown rental type: ${data.tipologia}")
+                }
+            }
+
+            _rentalTypeList.emit(rentalTypes)
+        }
+    }
+}
+>>>>>>> 4812a87f625f867d2f1ae227d1a319e3d64ec6ed
