@@ -1,4 +1,4 @@
-package com.corsolp.data.remote.models
+package com.corsolp.data.remote.models.auth
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

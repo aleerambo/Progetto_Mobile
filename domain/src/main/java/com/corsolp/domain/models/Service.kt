@@ -1,6 +1,6 @@
 package com.corsolp.domain.models
 
-data class RentalType(
+data class Service (
     val id: Int,
     val name: String
 )
