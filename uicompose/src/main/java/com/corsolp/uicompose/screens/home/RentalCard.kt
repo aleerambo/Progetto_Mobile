@@ -54,7 +54,7 @@ fun RentalCard(
                         )
                     )
                     Text(
-                        rentalType.name,
+                        rentalType.description,
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
@@ -69,7 +69,7 @@ fun RentalCard(
                         .background(color = Color.Blue)
                 ) {
                     Text(
-                        rentalType.score.toString(),
+                        rentalType.price.toString(),
                         modifier = Modifier.padding(8.dp),
                         style = TextStyle(
                             fontSize = 10.sp,
@@ -96,11 +96,14 @@ fun RentalCard(
 @Composable
 fun RentalCardPreview() {
     RentalCard(
-        rentalType = RentalType.Hotel(
-            hotelName = "Nome Hotel Nuovo",
-            hotelDescription = "Questa è la descrizione dell'hotel",
-            hotelPictureUrl = "",
-            hotelScore = 7.3,
+        rentalType = RentalType.Apartment(
+            apartmentDescription = "Nome Hotel Nuovo",
+            apartmentPictureUrl = "Questa è la descrizione dell'hotel",
+            apartmentPrice = 700.0,
+            apartmentRooms = 3,
+            apartmentSurface = 80,
+            apartmentFloor = 2,
+            apartmentServices = listOf("WiFi", "Parking", "Pool")
         ),
         onItemClick = {}
     )

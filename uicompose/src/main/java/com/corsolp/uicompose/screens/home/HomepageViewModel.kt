@@ -2,7 +2,7 @@ package com.corsolp.uicompose.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.corsolp.domain.models.RentalType
+import com.corsolp.domain.models.Rental
 import com.corsolp.domain.usecases.FetchRentalTypeListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +13,8 @@ class HomepageViewModel(
     private val fetchRentalTypeListUseCase: FetchRentalTypeListUseCase,
 ): ViewModel() {
 
-    private val _rentalTypeList = MutableStateFlow<List<RentalType>>(listOf())
-    val rentalTypeList: StateFlow<List<RentalType>> = _rentalTypeList
+    private val _rentalTypeList = MutableStateFlow<List<Rental>>(listOf())
+    val rentalTypeList: StateFlow<List<Rental>> = _rentalTypeList
 
     private val _showLoader = MutableStateFlow(false)
     val showLoader: StateFlow<Boolean> = _showLoader

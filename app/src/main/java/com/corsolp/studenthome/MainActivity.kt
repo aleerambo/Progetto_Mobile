@@ -10,7 +10,7 @@ class MainActivity : Application() {
 
         // Punto di ingresso dell'applicazione
         UseCaseProvider.setup(
-            repositoryProvider = RepositoryProviderImpl()
+            repositoryProvider = RepositoryProviderImpl
         )
     }
 }

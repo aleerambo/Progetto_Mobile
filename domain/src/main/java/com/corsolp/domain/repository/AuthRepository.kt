@@ -12,7 +12,7 @@ interface AuthRepository {
         name: String,
         surname: String,
         email: String,
-        phone: Long,
+        phone: String,
         password: String
     ): Result<User>
 
