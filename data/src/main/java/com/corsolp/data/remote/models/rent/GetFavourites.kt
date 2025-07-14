@@ -18,6 +18,6 @@ data class GetFavourites (
   @Json(name = "indirizzo"     ) var indirizzo    : String? = null,
   @Json(name = "stato"         ) var stato        : String? = null,
   @Json(name = "foto_annuncio" ) var fotoAnnuncio : String? = null,
-  @Json(name = "thumbnails"    ) var thumbnails   : String? = null
-
+  @Json(name = "thumbnails"    ) var thumbnails   : String? = null,
+  @Json(name = "tipologia"     ) var tipologia    : String? = null,
 )
