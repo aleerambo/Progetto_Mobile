@@ -27,7 +27,7 @@ fun NavigationHost() {
             HomeScreen(
                 viewModel = viewModel(
                     factory = HomeViewModelFactory(
-                        UseCaseProvider.fetchRentalTypeListUseCase,
+                        UseCaseProvider.fetchAllRentalPostsUseCase,
                     )
                 ),
                 showDetails = { rentalType ->
