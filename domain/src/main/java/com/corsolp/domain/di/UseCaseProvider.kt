@@ -1,8 +1,41 @@
 package com.corsolp.domain.di
 
-import com.corsolp.domain.repository.AuthRepository
-import com.corsolp.domain.repository.RentalRepository
-import com.corsolp.domain.usecases.*
+import com.corsolp.domain.usecases.ActivateRentalPostUseCase
+import com.corsolp.domain.usecases.ActivateRentalPostUseCaseImpl
+import com.corsolp.domain.usecases.AddFavouriteUseCase
+import com.corsolp.domain.usecases.AddFavouriteUseCaseImpl
+import com.corsolp.domain.usecases.CreateRentalPostUseCase
+import com.corsolp.domain.usecases.CreateRentalPostUseCaseImpl
+import com.corsolp.domain.usecases.DeleteFavouriteUseCase
+import com.corsolp.domain.usecases.DeleteFavouriteUseCaseImpl
+import com.corsolp.domain.usecases.DeleteRentalPostUseCase
+import com.corsolp.domain.usecases.DeleteRentalPostUseCaseImpl
+import com.corsolp.domain.usecases.FetchAllRentalPostsUseCase
+import com.corsolp.domain.usecases.FetchAllRentalPostsUseCaseImpl
+import com.corsolp.domain.usecases.FetchFavouritesUseCase
+import com.corsolp.domain.usecases.FetchFavouritesUseCaseImpl
+import com.corsolp.domain.usecases.FetchNeighborhoodListUseCase
+import com.corsolp.domain.usecases.FetchNeighborhoodListUseCaseImpl
+import com.corsolp.domain.usecases.FetchNewsUseCase
+import com.corsolp.domain.usecases.FetchNewsUseCaseImpl
+import com.corsolp.domain.usecases.FetchRentalPostByIdUseCase
+import com.corsolp.domain.usecases.FetchRentalPostByIdUseCaseImpl
+import com.corsolp.domain.usecases.FetchRentalTypeListUseCase
+import com.corsolp.domain.usecases.FetchRentalTypeListUseCaseImpl
+import com.corsolp.domain.usecases.FetchServiceListUseCase
+import com.corsolp.domain.usecases.FetchServiceListUseCaseImpl
+import com.corsolp.domain.usecases.FetchSingleNewsUseCase
+import com.corsolp.domain.usecases.FetchSingleNewsUseCaseImpl
+import com.corsolp.domain.usecases.GetProfileUseCase
+import com.corsolp.domain.usecases.GetProfileUseCaseImpl
+import com.corsolp.domain.usecases.LoginUseCase
+import com.corsolp.domain.usecases.LoginUseCaseImpl
+import com.corsolp.domain.usecases.LogoutUseCase
+import com.corsolp.domain.usecases.LogoutUseCaseImpl
+import com.corsolp.domain.usecases.RegisterUseCase
+import com.corsolp.domain.usecases.RegisterUseCaseImpl
+import com.corsolp.domain.usecases.UpdateRentalPostUseCase
+import com.corsolp.domain.usecases.UpdateRentalPostUseCaseImpl
 
 // Singleton -> rimane in memoria per tutta la vita dell'applicazione
 object UseCaseProvider {

@@ -1,11 +1,15 @@
 package com.corsolp.domain.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class RentalTypeEnum {
     ROOM,
     APARTMENT,
     BED
 }
 
+@Serializable
 data class Rental(
     val id: Int,
     val description: String,
