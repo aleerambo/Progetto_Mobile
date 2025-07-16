@@ -1,6 +1,7 @@
 package com.corsolp.studenthome
 
 import android.app.Application
+import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
 import com.corsolp.data.di.RepositoryProviderImpl
@@ -10,6 +11,7 @@ import com.corsolp.domain.di.UseCaseProvider
 class MainActivity : Application() {
     override fun onCreate() {
         super.onCreate()
+        Log.d("MainActivity", "onCreate eseguito")
 
         // 1. Creo o ottiengo una MasterKey per cifrare le prefs
         val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
