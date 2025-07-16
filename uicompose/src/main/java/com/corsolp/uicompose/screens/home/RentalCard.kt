@@ -20,21 +20,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.corsolp.domain.models.Rental
-import com.corsolp.domain.models.RentalTypeEnum
+import com.corsolp.domain.models.RentalType
 import com.corsolp.uicompose.R
+import com.corsolp.uicompose.extensions.toResId
 
 @Composable
 fun RentalCard(
-    rental: Rental,
-    onItemClick: (Rental) -> Unit
+    rentalType: RentalType,
+    onItemClick: (RentalType) -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(Color.LightGray)
-            .clickable { onItemClick(rental) }
+            .background(color = Color.LightGray)
+            .clickable { onItemClick(rentalType) }
     ) {
         Column {
             Row {
@@ -43,24 +43,18 @@ fun RentalCard(
                         .weight(1f)
                         .padding(dimensionResource(R.dimen.spacing_small))
                 ) {
-                    // Categoria:
-                    val categoryRes = when (rental.type) {
-                        RentalTypeEnum.ROOM      -> R.string.room
-                        RentalTypeEnum.APARTMENT -> R.string.apartment
-                        RentalTypeEnum.BED       -> R.string.bed
-                    }
+                    val type = stringResource(rentalType.toResId())
+
                     Text(
-                        text = stringResource(categoryRes),
+                        type,
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Gray
                         )
                     )
-
-                    // Descrizione
                     Text(
-                        text = rental.description,
+                        rentalType.description,
                         style = TextStyle(
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
@@ -72,10 +66,10 @@ fun RentalCard(
                     modifier = Modifier
                         .padding(8.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(Color.Blue)
+                        .background(color = Color.Blue)
                 ) {
                     Text(
-                        text = "${rental.price}€",
+                        rentalType.price.toString(),
                         modifier = Modifier.padding(8.dp),
                         style = TextStyle(
                             fontSize = 10.sp,
@@ -85,9 +79,8 @@ fun RentalCard(
                     )
                 }
             }
-            // Eventuali dettagli aggiuntivi
             Text(
-                text = "Stanze: ${rental.rooms}, mq: ${rental.surface}, piano: ${rental.floor}",
+                rentalType.description,
                 modifier = Modifier.padding(8.dp),
                 style = TextStyle(
                     fontSize = 16.sp,
@@ -99,21 +92,18 @@ fun RentalCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 fun RentalCardPreview() {
     RentalCard(
-        rental = Rental(
-            id = 1,
-            description = "Ampio appartamento vista mare",
-            pictureUrl = null,
-            rooms = 3,
-            surface = 80,
-            floor = 2,
-            services = listOf("WiFi", "Parcheggio", "Piscina"),
-            price = 700.0,
-            favorite = false,
-            type = RentalTypeEnum.APARTMENT
+        rentalType = RentalType.Apartment(
+            apartmentDescription = "Nome Hotel Nuovo",
+            apartmentPictureUrl = "Questa è la descrizione dell'hotel",
+            apartmentPrice = 700.0,
+            apartmentRooms = 3,
+            apartmentSurface = 80,
+            apartmentFloor = 2,
+            apartmentServices = listOf("WiFi", "Parking", "Pool")
         ),
         onItemClick = {}
     )

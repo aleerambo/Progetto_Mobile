@@ -3,18 +3,18 @@ package com.corsolp.uicompose.screens.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.corsolp.domain.models.Rental
-import com.corsolp.domain.usecases.FetchAllRentalPostsUseCase
+import com.corsolp.domain.usecases.FetchRentalTypeListUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.launch
 
 class HomepageViewModel(
-    private val fetchAllRentalPostsUseCase: FetchAllRentalPostsUseCase,
+    private val fetchRentalTypeListUseCase: FetchRentalTypeListUseCase,
 ): ViewModel() {
 
-    private val _rentalList = MutableStateFlow<List<Rental>>(listOf())
-    val rentalList: StateFlow<List<Rental>> = _rentalList
+    private val _rentalTypeList = MutableStateFlow<List<Rental>>(listOf())
+    val rentalTypeList: StateFlow<List<Rental>> = _rentalTypeList
 
     private val _showLoader = MutableStateFlow(false)
     val showLoader: StateFlow<Boolean> = _showLoader
@@ -26,10 +26,10 @@ class HomepageViewModel(
     private fun fetchRentalTypeList() {
         viewModelScope.launch {
             _showLoader.emit(true)
-            fetchAllRentalPostsUseCase().dropWhile {
+            fetchRentalTypeListUseCase().dropWhile {
                 it.isEmpty()
-            }.collect { rentalList ->
-                _rentalList.emit(rentalList)
+            }.collect { rentalTypeList ->
+                _rentalTypeList.emit(rentalTypeList)
                 _showLoader.emit(false)
             }
         }

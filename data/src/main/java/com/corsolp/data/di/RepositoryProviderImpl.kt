@@ -7,20 +7,21 @@ import com.corsolp.data.repository.RentalRepositoryImpl
 import com.corsolp.domain.di.RepositoryProvider
 
 class RepositoryProviderImpl : RepositoryProvider {
-    companion object {
-        lateinit var tokenManager: TokenManager
-    }
+    // TokenManager (lo costruisci una volta, magari passandogli SharedPreferences cifrate)
+    // Per semplicità, qui ipotizzo che TokenManager sia già stato istanziato altrove (es. in Application).
+    private val tokenManager: TokenManager = TokenManager(/* SharedPreferences cifrate */)
 
     // Creiamo un singolo RetrofitClient
-    private val retrofitClient by lazy { RetrofitClient(tokenManager) }
+    private val retrofitClient = RetrofitClient(tokenManager)
 
     // AuthRepositoryImpl
-    override val authRepository by lazy {
-        AuthRepositoryImpl(retrofitClient.authApi, tokenManager)
-    }
+    override val authRepository = AuthRepositoryImpl(
+        retrofitClient.authApi,
+        tokenManager
+    )
 
     // RentalRepositoryImpl
-    override val rentalRepository by lazy {
-        RentalRepositoryImpl(retrofitClient.rentApi)
-    }
+    override val rentalRepository = RentalRepositoryImpl(
+        retrofitClient.rentApi
+    )
 }

@@ -17,7 +17,7 @@ class LoginViewModel(
     }
 
     fun doRegister(
-        nome: String, cognome: String, mail: String, telefono: String, password: String
+        nome: String, cognome: String, mail: String, telefono: Long, password: String
     ): LiveData<Result<User>> = liveData {
         emit(registerUseCase(nome, cognome, mail, telefono, password))
     }

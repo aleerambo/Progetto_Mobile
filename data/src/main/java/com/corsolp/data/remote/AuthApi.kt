@@ -19,7 +19,7 @@ interface AuthApi {
     suspend fun login(@Body request: LoginRequest): AuthResponse
 
     @POST("/api/auth/logout")
-    suspend fun postLogout(): Unit
+    suspend fun postLogout(): Int
 
     @GET("/api/auth/profile")
     suspend fun getAuthProfile(): GetAuthProfile

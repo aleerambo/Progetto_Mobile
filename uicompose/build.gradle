@@ -29,15 +29,6 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
-    }
-
 }
 
 dependencies {
@@ -60,8 +51,4 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-
-    implementation(libs.runtime)
-    implementation(libs.androidx.runtime.livedata)
-    implementation(libs.androidx.runtime.rxjava2)
 }
