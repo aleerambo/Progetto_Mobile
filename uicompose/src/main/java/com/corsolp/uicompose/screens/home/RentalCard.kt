@@ -1,6 +1,7 @@
 package com.corsolp.uicompose.screens.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -27,13 +29,14 @@ import com.corsolp.uicompose.R
 @Composable
 fun RentalCard(
     rental: Rental,
-    onItemClick: (Rental) -> Unit
+    onItemClick: (Rental) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .background(Color.LightGray)
+            .clip(RoundedCornerShape(dimensionResource(R.dimen.spacing_small)))
+            .background(color = colorResource(R.color.light_gray))
             .clickable { onItemClick(rental) }
     ) {
         Column {
@@ -52,7 +55,7 @@ fun RentalCard(
                     Text(
                         text = stringResource(categoryRes),
                         style = TextStyle(
-                            fontSize = 14.sp,
+                            fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Gray
                         )
@@ -62,7 +65,7 @@ fun RentalCard(
                     Text(
                         text = rental.description,
                         style = TextStyle(
-                            fontSize = 20.sp,
+                            fontSize = dimensionResource(R.dimen.txt_size_large).value.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.DarkGray
                         )
@@ -70,15 +73,15 @@ fun RentalCard(
                 }
                 Box(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color.Blue)
+                        .padding(dimensionResource(R.dimen.spacing_small))
+                        .clip(RoundedCornerShape(dimensionResource(R.dimen.spacing_xs)))
+                        .background(colorResource(R.color.blue))
                 ) {
                     Text(
                         text = "${rental.price}€",
-                        modifier = Modifier.padding(8.dp),
+                        modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)),
                         style = TextStyle(
-                            fontSize = 10.sp,
+                            fontSize = dimensionResource(R.dimen.txt_size_small).value.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -88,9 +91,9 @@ fun RentalCard(
             // Eventuali dettagli aggiuntivi
             Text(
                 text = "Stanze: ${rental.rooms}, mq: ${rental.surface}, piano: ${rental.floor}",
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)),
                 style = TextStyle(
-                    fontSize = 16.sp,
+                    fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.DarkGray
                 )
@@ -104,7 +107,7 @@ fun RentalCard(
 fun RentalCardPreview() {
     RentalCard(
         rental = Rental(
-            id = 1,
+            1,
             description = "Ampio appartamento vista mare",
             pictureUrl = null,
             rooms = 3,

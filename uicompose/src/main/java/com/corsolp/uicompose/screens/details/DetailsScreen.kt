@@ -1,11 +1,18 @@
 package com.corsolp.uicompose.screens.details
 
 import androidx.compose.runtime.Composable
-import com.corsolp.domain.models.RentalType
+import androidx.compose.ui.tooling.preview.Preview
+import com.corsolp.domain.models.Rental
 
 @Composable
 fun DetailsScreen(
-    rentalType: RentalType
+    rental: Rental
 ) {
+
+}
+
+@Preview
+@Composable
+fun DetailsScreenPreview() {
 
 }
