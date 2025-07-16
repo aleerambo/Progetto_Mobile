@@ -9,7 +9,7 @@ import com.corsolp.domain.models.Neighborhood
 import com.corsolp.domain.models.RentalType
 
 interface RentalRepository {
-    // 1) Liste “live” di dati rilasciati via StateFlow:
+    // Liste “live” di dati rilasciati via StateFlow:
     fun fetchNewsList(): StateFlow<List<News>>
     fun fetchRentalTypeList(): StateFlow<List<RentalType>>
     fun fetchServiceList(): StateFlow<List<Service>>
@@ -17,7 +17,7 @@ interface RentalRepository {
     fun fetchAllRentalPosts(): StateFlow<List<Rental>>
     fun fetchFavouritesList(): StateFlow<List<Favourite>>
 
-    // 2) Operazioni “one‐shot” (suspend) che restituiscono Result<…>:
+    // Operazioni “one‐shot” (suspend) che restituiscono Result<…>:
     suspend fun fetchNewsById(id: Int): Result<News>
     suspend fun fetchRentalPostById(id: Int): Result<Rental>
     suspend fun createRentalPost(

@@ -10,6 +10,7 @@ import com.corsolp.data.remote.models.rent.GetAreas
 import com.corsolp.data.remote.models.rent.GetServices
 import com.corsolp.data.remote.models.rent.GetRentalTypePosts
 import com.corsolp.data.remote.models.rent.PostFavourites
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -87,7 +88,7 @@ interface RentApi {
     @POST("/api/preferiti")
     suspend fun postFavourites(
         @Body favourites: PostFavourites
-    ): Int
+    ): Response<Unit>
 
     @Multipart
     @POST("/api/annunci/create")
@@ -104,7 +105,7 @@ interface RentApi {
         @Part("numero_inquilini") numberOfTenants: Int,
         @Part("contratto_min") minContract: Int,
         @Part("contratto_max") maxContract: Int,
-    ): Int
+    ): Response<Unit>
 
     @Multipart
     @POST("/api/annunci/update/{id}")
@@ -122,20 +123,20 @@ interface RentApi {
         @Part("numero_inquilini") numberOfTenants: Int,
         @Part("contratto_min") minContract: Int,
         @Part("contratto_max") maxContract: Int,
-    ): Int
+    ): Response<Unit>
 
     @POST("/api/annunci/attiva/{id}")
     suspend fun activateRentalPost(
         @Path("id") id: Int
-    ): Int
+    ): Response<Unit>
 
     @DELETE("/api/preferiti/{id}")
     suspend fun deleteFavourite(
         @Path("id") id: Int
-    ): Int
+    ): Response<Unit>
 
     @DELETE("/api/annunci/delete/{id}")
     suspend fun deleteRentalPost(
         @Path("id") id: Int
-    ): Int
+    ): Response<Unit>
 }
