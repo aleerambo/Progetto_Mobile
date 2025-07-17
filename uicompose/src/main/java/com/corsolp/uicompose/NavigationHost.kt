@@ -78,16 +78,36 @@ fun NavigationHost() {
                 )
                 Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
                 // Pulsanti del menu
-                Button(onClick = { navController.navigate(Routes.Home) }) {
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navController.navigate(Routes.Home)
+                }) {
                     Text("Homepage")
                 }
-                Button(onClick = { navController.navigate(Routes.Guide) }) {
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navController.navigate(Routes.Guide)
+                }) {
                     Text("Guida alla ricerca")
                 }
-                Button(onClick = { navController.navigate(Routes.AboutUs) }) {
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navController.navigate(Routes.AboutUs)
+                }) {
                     Text("Chi siamo")
                 }
-                Button(onClick = { navController.navigate(Routes.Contact) }) {
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navController.navigate(Routes.Contact)
+                }) {
                     Text("Contatti")
                 }
             }
@@ -142,27 +162,23 @@ fun NavigationHost() {
                         ),
                         showDetails = { rental ->
                             val rentalJsonString = Json.encodeToString(rental)
-                            navController.navigate(
-                                DetailsScreen(rentalJsonString)
-                            )
+                            navController.navigate("${Routes.DetailsScreen}/$rentalJsonString")
                         }
                     )
                 }
-                composable(Routes.DetailsScreen) { navBackStackEntry ->
-                    val detailsScreen = navBackStackEntry.toRoute<DetailsScreen>()
-                    val rental = Json.decodeFromString<Rental>(detailsScreen.rentalJsonString)
+                composable("${Routes.DetailsScreen}/{rentalJsonString}") { navBackStackEntry ->
+                    val mainViewModel: MainViewModel = viewModel()
+                    val rentalJsonString = navBackStackEntry.arguments?.getString("rentalJsonString")
+                    val rental = rentalJsonString?.let { Json.decodeFromString<Rental>(it) }
 
-                    val mainViewModel: MainViewModel = viewModel() // Ottieni il MainViewModel
-                    val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
-                    val currentUser = mainViewModel.currentUser.collectAsState(initial = null).value
-                    val isAdmin = mainViewModel.isAdmin()
-
-                    DetailsScreen(
-                        rental = rental,
-                        isLoggedIn = isLoggedIn,
-                        isAdmin = isAdmin,
-                        onDeleteClick = { /* Logica per eliminare */ }
-                    )
+                    if (rental != null) {
+                        DetailsScreen(
+                            rental = rental,
+                            isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value,
+                            isAdmin = mainViewModel.isAdmin(),
+                            onDeleteClick = { /* Logica per eliminare */ }
+                        )
+                    }
                 }
                 composable(Routes.Guide) { GuideScreen() }
                 composable(Routes.AboutUs) { AboutUsScreen() }

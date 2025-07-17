@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -26,7 +27,7 @@ fun GuideScreen() {
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
     ) {
         Text(
-            text = "Guida alla ricerca dell'alloggio ideale",
+            text = stringResource(R.string.guide),
             style = TextStyle(
                 fontSize = dimensionResource(R.dimen.txt_size_title).value.sp,
                 fontWeight = FontWeight.Bold,
@@ -34,7 +35,7 @@ fun GuideScreen() {
             )
         )
         Text(
-            text = "1. Definisci il tuo budget.\n2. Scegli la posizione ideale.\n3. Controlla i servizi inclusi.\n4. Leggi le recensioni degli altri utenti.",
+            text = stringResource(R.string.guide_text),
             style = TextStyle(
                 fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                 color = colorResource(R.color.text_color)
