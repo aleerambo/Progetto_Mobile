@@ -1,14 +1,19 @@
 package com.corsolp.uicompose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.DrawerValue
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,81 +37,137 @@ import kotlinx.serialization.json.Json
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.Icon
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.corsolp.uicompose.screens.about.AboutUsScreen
+import com.corsolp.uicompose.screens.contact.ContactScreen
+import com.corsolp.uicompose.screens.guide.GuideScreen
+import kotlinx.coroutines.launch
 
 @Composable
 fun NavigationHost() {
     val navController = rememberNavController()
-    val currentSection =
-        "Homepage" // Puoi cambiare dinamicamente questa variabile in base alla sezione
+    val currentSection = "Homepage"
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        // Barra superiore con icona e nome sezione
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(colorResource(id = R.color.background_color))
-                .padding(dimensionResource(id = R.dimen.spacing_medium))
-        ) {
-            Row {
-                // Icona tonda
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "User Icon",
-                    tint = colorResource(id = R.color.background_color),
-                    modifier = Modifier
-                        .background(colorResource(id = R.color.gray), shape = CircleShape)
-                        .padding(dimensionResource(id = R.dimen.spacing_small))
-                )
-                // Nome della sezione
+    ModalDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorResource(id = R.color.light_gray))
+                    .padding(dimensionResource(id = R.dimen.spacing_medium))
+            ) {
                 Text(
-                    text = currentSection,
-                    modifier = Modifier
-                        .padding(start = dimensionResource(id = R.dimen.spacing_small))
-                        .align(Alignment.CenterVertically),
-                    color = colorResource(id = R.color.text_color)
+                    text = "Menu",
+                    style = TextStyle(
+                        fontSize = dimensionResource(id = R.dimen.txt_size_title).value.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = colorResource(id = R.color.blue)
+                    )
                 )
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacing_medium)))
+                // Pulsanti del menu
+                Button(onClick = { navController.navigate(Routes.Home) }) {
+                    Text("Homepage")
+                }
+                Button(onClick = { navController.navigate(Routes.Guide) }) {
+                    Text("Guida alla ricerca")
+                }
+                Button(onClick = { navController.navigate(Routes.AboutUs) }) {
+                    Text("Chi siamo")
+                }
+                Button(onClick = { navController.navigate(Routes.Contact) }) {
+                    Text("Contatti")
+                }
             }
         }
-
-        // Contenuto del NavHost
-        NavHost(
-            navController,
-            startDestination = Home
-        ) {
-            composable<Home> {
-                HomeScreen(
-                    viewModel = viewModel(
-                        factory = HomeViewModelFactory(
-                            UseCaseProvider.fetchAllRentalPostsUseCase,
-                        )
-                    ),
-                    showDetails = { rental ->
-                        val rentalJsonString = Json.encodeToString(rental)
-                        navController.navigate(
-                            DetailsScreen(rentalJsonString)
-                        )
-                    }
-                )
+    ) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Barra superiore con icona e nome sezione
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(colorResource(id = R.color.background_color))
+                    .padding(dimensionResource(id = R.dimen.spacing_medium))
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    // Icona tonda come pulsante
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "User Icon",
+                        tint = colorResource(id = R.color.gray),
+                        modifier = Modifier
+                            .background(colorResource(id = R.color.light_gray), shape = CircleShape)
+                            .padding(dimensionResource(id = R.dimen.spacing_small))
+                            .clickable {
+                                scope.launch { drawerState.open() }
+                            }
+                    )
+                    Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacing_small)))
+                    // Nome della sezione
+                    Text(
+                        text = currentSection,
+                        color = colorResource(id = R.color.text_color),
+                        style = TextStyle(fontWeight = FontWeight.Bold)
+                    )
+                }
             }
-            composable<DetailsScreen> { navBackStackEntry ->
-                val detailsScreen = navBackStackEntry.toRoute<DetailsScreen>()
-                val rental = Json.decodeFromString<Rental>(detailsScreen.rentalJsonString)
 
-                val mainViewModel: MainViewModel = viewModel() // Ottieni il MainViewModel
-                val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
-                val currentUser = mainViewModel.currentUser.collectAsState(initial = null).value
-                val isAdmin = mainViewModel.isAdmin()
 
-                DetailsScreen(
-                    rental = rental,
-                    isLoggedIn = isLoggedIn,
-                    isAdmin = isAdmin,
-                    onDeleteClick = { /* Logica per eliminare */ }
-                )
+            // Contenuto del NavHost
+            NavHost(
+                navController,
+                startDestination = Routes.Home
+            ) {
+                composable(Routes.Home) {
+                    HomeScreen(
+                        viewModel = viewModel(
+                            factory = HomeViewModelFactory(
+                                UseCaseProvider.fetchAllRentalPostsUseCase,
+                            )
+                        ),
+                        showDetails = { rental ->
+                            val rentalJsonString = Json.encodeToString(rental)
+                            navController.navigate(
+                                DetailsScreen(rentalJsonString)
+                            )
+                        }
+                    )
+                }
+                composable(Routes.DetailsScreen) { navBackStackEntry ->
+                    val detailsScreen = navBackStackEntry.toRoute<DetailsScreen>()
+                    val rental = Json.decodeFromString<Rental>(detailsScreen.rentalJsonString)
+
+                    val mainViewModel: MainViewModel = viewModel() // Ottieni il MainViewModel
+                    val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
+                    val currentUser = mainViewModel.currentUser.collectAsState(initial = null).value
+                    val isAdmin = mainViewModel.isAdmin()
+
+                    DetailsScreen(
+                        rental = rental,
+                        isLoggedIn = isLoggedIn,
+                        isAdmin = isAdmin,
+                        onDeleteClick = { /* Logica per eliminare */ }
+                    )
+                }
+                composable(Routes.Guide) { GuideScreen() }
+                composable(Routes.AboutUs) { AboutUsScreen() }
+                composable(Routes.Contact) { ContactScreen() }
+
             }
         }
     }
@@ -119,3 +180,20 @@ data object Home
 data class DetailsScreen(
     val rentalJsonString: String
 )
+
+@Serializable
+data object Guide
+
+@Serializable
+data object AboutUs
+
+@Serializable
+data object Contact
+
+object Routes {
+    const val Home = "home"
+    const val DetailsScreen = "details_screen"
+    const val Guide = "guide"
+    const val AboutUs = "about_us"
+    const val Contact = "contact"
+}

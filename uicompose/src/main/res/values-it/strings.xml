@@ -3,4 +3,40 @@
     <string name="room">Stanza</string>
     <string name="apartment">Appartamento</string>
     <string name="bed">Posto letto</string>
+    <string name="about_us">Chi siamo</string>
+    <string name="about_us_text">
+        Benvenuto su StudentHome!
+        Siamo una piattaforma creata da studenti per studenti, con l\'obiettivo di semplificare la ricerca di alloggi universitari. Il nostro sogno? Creare un punto di riferimento unico per trovare appartamenti, camere e posti letto in modo rapido, sicuro e affidabile.
+        Su StudentHome troverai solo inserzioni pensate per le esigenze degli studenti, con offerte speciali e recensioni autentiche per aiutarti a fare la scelta giusta. Crediamo nel potere della condivisione e della trasparenza: per questo mettiamo al centro una community attiva, dove chi cerca casa e chi la offre può entrare in contatto diretto.
+        Che tu stia cercando il tuo primo appartamento o una stanza accogliente vicino all’università, siamo qui per rendere il processo semplice e senza stress. StudentHome è la tua nuova casa… prima della tua prossima casa!
+    </string>
+    <string name="guide">Guida alla ricerca dell’alloggio ideale</string>
+    <string name="guide_text">
+        Trovare l’alloggio perfetto può sembrare una sfida, ma con alcuni consigli mirati puoi semplificare il processo e fare la scelta giusta per le tue esigenze.
+        Noi di StudentHome, siamo qui per aiutarti a trovare la tua prossima casa con facilità.
+        1. Definisci le tue priorità
+        Prima di iniziare, elenca le tue necessità: vicinanza all’università, budget, numero di coinquilini e servizi indispensabili (es. Wi-Fi, lavatrice, aria condizionata).
+        2. Esplora le opzioni
+        Le foto e le descrizioni dettagliate ti aiuteranno a farti un’idea chiara.
+        3. Valuta il quartiere
+        Scegli un quartiere sicuro e ben collegato con i mezzi pubblici. Leggi le recensioni degli altri studenti per avere un’idea della zona.
+        4. Visita di persona (se puoi)
+        Le foto sono utili, ma una visita dal vivo ti permetterà di verificare ogni dettaglio e percepire l’atmosfera del luogo. Non trascurare aspetti come la luminosità, lo stato degli arredi e l’isolamento acustico.
+        5. Prendi una decisione consapevole
+        Una volta trovato l’alloggio che risponde alle tue esigenze, non aspettare troppo a lungo. Il mercato degli affitti per studenti è molto dinamico, e la tua futura casa potrebbe andare via velocemente!
+    </string>
+    <string name="contact_us">Contatti</string>
+    <string name="contact_us1">
+        Hai bisogno di assistenza o vuoi metterti in contatto con noi? Siamo qui per aiutarti!
+        Puoi scriverci una mail all’indirizzo:
+    </string>
+    <string name="contact_us2">
+        Oppure contattarci telefonicamente al numero:
+    </string>
+    <string name="contact_us3">
+        Il nostro team è disponibile per rispondere alle tue domande, chiarire dubbi e fornirti il supporto necessario per trovare la casa perfetta per i tuoi studi.
+        Non esitare a contattarci, siamo al tuo fianco
+    </string>
+    <string name="contact_us_email">studenthome@support.com</string>
+    <string name="contact_us_phone">051 526398</string>
 </resources>

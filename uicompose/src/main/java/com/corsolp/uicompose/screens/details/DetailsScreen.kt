@@ -192,7 +192,7 @@ fun DetailsScreen(
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.green))
                     ) {
-                        Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white), tint = colorResource(R.color.white))
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white))
                         Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                         Text(
                             text = "Chiama",
