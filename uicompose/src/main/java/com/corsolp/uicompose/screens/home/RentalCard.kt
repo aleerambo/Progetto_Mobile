@@ -119,6 +119,7 @@ fun RentalCardPreview() {
             type = RentalTypeEnum.APARTMENT,
             phoneNumber = "123456789",
             email = "dddd@saaaa.xc",
+            address = "Via Roma, 123, Milano",
         ),
         onItemClick = {}
     )

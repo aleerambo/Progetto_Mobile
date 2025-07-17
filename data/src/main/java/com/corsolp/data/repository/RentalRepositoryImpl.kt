@@ -366,6 +366,7 @@ class RentalRepositoryImpl(
             type = rentalTypeEnum,
             phoneNumber = this.telefono ?: "",
             email = this.mail ?: "",
+            address = this.indirizzo ?: "",
         )
     }
 
@@ -395,7 +396,8 @@ class RentalRepositoryImpl(
             favorite = favorite,
             type = rentalTypeEnum,
             phoneNumber = rentalDetails.telefono.orEmpty(),
-            email = rentalDetails.mail.orEmpty()
+            email = rentalDetails.mail.orEmpty(),
+            address = rentalDetails.indirizzo.orEmpty()
         )
     }
 
@@ -418,6 +420,7 @@ class RentalRepositoryImpl(
             },
             phoneNumber = this.telefono ?: "",
             email = this.mail ?: "",
+            address = this.indirizzo ?: "",
         )
     }
 }

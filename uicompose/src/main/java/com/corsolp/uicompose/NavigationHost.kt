@@ -40,7 +40,8 @@ import androidx.compose.ui.res.dimensionResource
 @Composable
 fun NavigationHost() {
     val navController = rememberNavController()
-    val currentSection = "Homepage" // Puoi cambiare dinamicamente questa variabile in base alla sezione
+    val currentSection =
+        "Homepage" // Puoi cambiare dinamicamente questa variabile in base alla sezione
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Barra superiore con icona e nome sezione

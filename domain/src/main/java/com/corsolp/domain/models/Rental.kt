@@ -21,6 +21,7 @@ data class Rental(
     val price: Double,
     val favorite: Boolean,
     val type: RentalTypeEnum,
+    val address: String,
     val phoneNumber: String,
     val email: String,
 )

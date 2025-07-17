@@ -13,11 +13,13 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.TextStyle
@@ -62,24 +64,21 @@ fun DetailsScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = {
-            TopAppBar(title = { Text(text = "Dettaglio Annuncio") })
-        },
         content = { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(dimensionResource(R.dimen.spacing_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_medium))
             ) {
                 Card(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.spacing_small)),
                     backgroundColor = colorResource(R.color.light_gray),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                    Column(modifier = Modifier.padding(dimensionResource(R.dimen.spacing_medium))) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
                                 val categoryRes = when (rental.type) {
@@ -90,16 +89,16 @@ fun DetailsScreen(
                                 Text(
                                     text = stringResource(categoryRes),
                                     style = TextStyle(
-                                        fontSize = 14.sp,
+                                        fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = colorResource(R.color.gray)
                                     )
                                 )
-                                Spacer(Modifier.height(4.dp))
+                                Spacer(Modifier.height(dimensionResource(R.dimen.spacing_xs)))
                                 Text(
                                     text = rental.description,
                                     style = TextStyle(
-                                        fontSize = 20.sp,
+                                        fontSize = dimensionResource(R.dimen.txt_size_large).value.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = colorResource(R.color.blue)
                                     )
@@ -107,14 +106,14 @@ fun DetailsScreen(
                             }
                             Box(
                                 modifier = Modifier
-                                    .clip(RoundedCornerShape(4.dp))
+                                    .clip(RoundedCornerShape(dimensionResource(R.dimen.spacing_xs)))
                                     .background(colorResource(R.color.green))
-                                    .padding(8.dp)
+                                    .padding(dimensionResource(R.dimen.spacing_small))
                             ) {
                                 Text(
                                     text = "${rental.price} €",
                                     style = TextStyle(
-                                        fontSize = 12.sp,
+                                        fontSize = dimensionResource(R.dimen.txt_size_caption).value.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = colorResource(R.color.white)
                                     )
@@ -122,18 +121,18 @@ fun DetailsScreen(
                             }
                         }
 
-                        Spacer(Modifier.height(8.dp))
+                        Spacer(Modifier.height(dimensionResource(R.dimen.spacing_small)))
 
                         Text(
-                            text = "Stanze: ${rental.rooms}    •    mq: ${rental.surface}    •    piano: ${rental.floor}",
+                            text = "Stanze: ${rental.rooms}, mq: ${rental.surface}, piano: ${rental.floor}",
                             style = TextStyle(
-                                fontSize = 14.sp,
+                                fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                                 fontWeight = FontWeight.Normal,
                                 color = colorResource(R.color.dark_gray)
                             )
                         )
 
-                        Spacer(Modifier.height(8.dp))
+                        Spacer(Modifier.height(dimensionResource(R.dimen.spacing_small)))
 
                         val imagePainter = rememberAsyncImagePainter(
                             model = rental.pictureUrl,
@@ -145,8 +144,8 @@ fun DetailsScreen(
                             contentDescription = "Immagine Annuncio",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
-                                .clip(RoundedCornerShape(8.dp))
+                                .height(dimensionResource(R.dimen.img_height))
+                                .clip(RoundedCornerShape(dimensionResource(R.dimen.spacing_small)))
                         )
                     }
                 }
@@ -169,9 +168,14 @@ fun DetailsScreen(
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.blue))
                     ) {
-                        Icon(Icons.Default.Email, contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
-                        Text("Contatta")
+                        Icon(Icons.Default.Email, contentDescription = null, tint = colorResource(R.color.white))
+                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                        Text(
+                            text = "Contatta",
+                            style = TextStyle(
+                                color = colorResource(R.color.white),
+                            )
+                        )
                     }
 
                     // Pulsante Chiama
@@ -188,9 +192,35 @@ fun DetailsScreen(
                         },
                         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.green))
                     ) {
-                        Icon(Icons.Default.Phone, contentDescription = null)
-                        Spacer(Modifier.width(8.dp))
-                        Text("Chiama")
+                        Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white), tint = colorResource(R.color.white))
+                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                        Text(
+                            text = "Chiama",
+                            style = TextStyle(
+                                color = colorResource(R.color.white),
+                            )
+                        )
+                    }
+
+                    // Pulsante Apri in Google Maps
+                    Button(
+                        onClick = {
+                            val gmmIntentUri = "geo:0,0?q=${Uri.encode(rental.address)}".toUri()
+                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+                                setPackage("com.google.android.apps.maps")
+                            }
+                            context.startActivity(mapIntent)
+                        },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.light_gray))
+                    ) {
+                        Icon(
+                            Icons.Default.Map,
+                            contentDescription = null,
+                        )
+                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                        Text(
+                            text = "Mappa"
+                        )
                     }
 
                     // Pulsante Elimina (solo admin)
@@ -199,9 +229,14 @@ fun DetailsScreen(
                             onClick = onDeleteClick,
                             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.red))
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = null)
-                            Spacer(Modifier.width(8.dp))
-                            Text("Elimina")
+                            Icon(Icons.Default.Delete, contentDescription = null, tint = colorResource(R.color.white))
+                            Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                            Text(
+                                text = "Elimina",
+                                style = TextStyle(
+                                    color = colorResource(R.color.white),
+                                )
+                            )
                         }
                     }
                 }
@@ -226,10 +261,11 @@ fun DetailsScreenPreview() {
             favorite = false,
             type = RentalTypeEnum.APARTMENT,
             phoneNumber = "3635521489",
-            email = "siisi@titti.com"
+            email = "siisi@titti.com",
+            address = "Via Roma, 123, Cesena",
         ),
-        isLoggedIn = false,
-        isAdmin = false,
+        isLoggedIn = true,
+        isAdmin = true,
         onDeleteClick = {},
     )
 }
