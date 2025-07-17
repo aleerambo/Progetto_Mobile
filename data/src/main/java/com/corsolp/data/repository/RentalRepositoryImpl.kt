@@ -27,7 +27,7 @@ class RentalRepositoryImpl(
     // Usare un scope su IO per tutte le chiamate di rete
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    // 1) Flussi “live”
+    // Flussi “live”
     private val _newsList             = MutableStateFlow<List<News>>(emptyList())
     override fun fetchNewsList(): StateFlow<List<News>> = _newsList
 
@@ -354,58 +354,70 @@ class RentalRepositoryImpl(
             else           -> throw IllegalArgumentException("Tipo sconosciuto: ${this.tipologia}")
         }
         return Rental(
-            id          = this.id ?: 0,
+            id = this.id ?: 0,
             description = this.descrizione.orEmpty().trim('"'),
-            pictureUrl  = this.fotoAnnuncio,
-            rooms       = this.locali ?: 0,
-            surface     = this.mq ?: 0,
-            floor       = this.piano ?: 0,
-            services    = this.servizi?.split(',') ?: emptyList(),
-            price       = this.prezzo?.toDoubleOrNull() ?: 0.0,
-            favorite    = favorite,
-            type        = rentalTypeEnum
+            pictureUrl = this.fotoAnnuncio,
+            rooms = this.locali ?: 0,
+            surface = this.mq ?: 0,
+            floor = this.piano ?: 0,
+            services = this.servizi?.split(',') ?: emptyList(),
+            price = this.prezzo?.toDoubleOrNull() ?: 0.0,
+            favorite = favorite,
+            type = rentalTypeEnum,
+            phoneNumber = this.telefono ?: "",
+            email = this.mail ?: "",
         )
     }
 
     /** GetFavourites ha campi identici a GetAllRentalPosts, più utente_id */
-    private fun GetFavourites.toDomainFromFav(favorite: Boolean): Rental {
-        val rentalTypeEnum = when(this.tipologia?.lowercase()) {
+    private suspend fun GetFavourites.toDomainFromFav(favorite: Boolean): Rental {
+        val rentalTypeEnum = when (this.tipologia?.lowercase()) {
             "stanza"       -> RentalTypeEnum.ROOM
             "appartamento" -> RentalTypeEnum.APARTMENT
             "posto letto"  -> RentalTypeEnum.BED
             else           -> throw IllegalArgumentException("Tipo sconosciuto: ${this.tipologia}")
         }
+
+        // Recupera i dettagli completi dell'annuncio in una coroutine
+        val rentalDetails = kotlinx.coroutines.withContext(Dispatchers.IO) {
+            rentApi.getRentalPostsById(this@toDomainFromFav.id ?: 0)
+        }
+
         return Rental(
-            id          = this.id ?: 0,
+            id = this.id ?: 0,
             description = this.descrizione.orEmpty().trim('"'),
-            pictureUrl  = this.fotoAnnuncio,
-            rooms       = this.locali ?: 0,
-            surface     = this.mq ?: 0,
-            floor       = this.piano ?: 0,
-            services    = emptyList(),
-            price       = this.prezzo?.toDoubleOrNull() ?: 0.0,
-            favorite    = favorite,
-            type        = rentalTypeEnum
+            pictureUrl = this.fotoAnnuncio,
+            rooms = this.locali ?: 0,
+            surface = this.mq ?: 0,
+            floor = this.piano ?: 0,
+            services = emptyList(),
+            price = this.prezzo?.toDoubleOrNull() ?: 0.0,
+            favorite = favorite,
+            type = rentalTypeEnum,
+            phoneNumber = rentalDetails.telefono.orEmpty(),
+            email = rentalDetails.mail.orEmpty()
         )
     }
 
     private fun GetRentalPostsByID.toDomainFromAll(favorite: Boolean): Rental {
         return Rental(
-            id          = this.id ?: 0,
+            id = this.id ?: 0,
             description = this.descrizione.orEmpty().trim('"'),
-            pictureUrl  = this.fotoAnnuncio,
-            rooms       = this.locali ?: 0,
-            surface     = this.mq ?: 0,
-            floor       = this.piano ?: 0,
-            services    = this.servizi?.split(',') ?: emptyList(),
-            price       = this.prezzo?.toDoubleOrNull() ?: 0.0,
-            favorite    = favorite,
-            type        = when(this.tipologia?.lowercase()) {
-                "stanza"       -> RentalTypeEnum.ROOM
+            pictureUrl = this.fotoAnnuncio,
+            rooms = this.locali ?: 0,
+            surface = this.mq ?: 0,
+            floor = this.piano ?: 0,
+            services = this.servizi?.split(',') ?: emptyList(),
+            price = this.prezzo?.toDoubleOrNull() ?: 0.0,
+            favorite = favorite,
+            type = when (this.tipologia?.lowercase()) {
+                "stanza" -> RentalTypeEnum.ROOM
                 "appartamento" -> RentalTypeEnum.APARTMENT
-                "posto letto"  -> RentalTypeEnum.BED
-                else           -> throw IllegalArgumentException("Tipo sconosciuto: ${this.tipologia}")
-            }
+                "posto letto" -> RentalTypeEnum.BED
+                else -> throw IllegalArgumentException("Tipo sconosciuto: ${this.tipologia}")
+            },
+            phoneNumber = this.telefono ?: "",
+            email = this.mail ?: "",
         )
     }
 }
