@@ -90,15 +90,26 @@ fun NavigationHost() {
                     }
                 )
             }
-            composable<DetailsScreen> { navBackStackEntry ->
+            /*composable<DetailsScreen> { navBackStackEntry ->
                 val detailsScreen = navBackStackEntry.toRoute<DetailsScreen>()
-                val rental = Json.decodeFromString<Rental>(
-                    detailsScreen.rentalJsonString
-                )
+                val rental = Json.decodeFromString<Rental>(detailsScreen.rentalJsonString)
+
+                val mainViewModel: MainViewModel = viewModel() // Ottieni il MainViewModel
+                val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
+                val currentUser = mainViewModel.currentUser.collectAsState(initial = null).value
+                val isAdmin = mainViewModel.isAdmin()
+                val isOwner = currentUser?.id == rental.ownerId // Supponendo che `ownerId` sia presente in `Rental`
+
                 DetailsScreen(
-                    rental = rental
+                    rental = rental,
+                    isLoggedIn = isLoggedIn,
+                    isAdmin = isAdmin,
+                    isOwner = isOwner,
+                    onContactClick = { /* Logica per contattare */ },
+                    onCallClick = { /* Logica per chiamare */ },
+                    onDeleteClick = { /* Logica per eliminare */ }
                 )
-            }
+            }*/
         }
     }
 }
