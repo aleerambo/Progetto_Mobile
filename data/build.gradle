@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    id("kotlin-kapt")
 }
 
 android {
@@ -38,6 +39,9 @@ dependencies {
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
+
+    implementation libs.androidx.room.runtime
+    ksp(libs.androidx.room.compiler)
 
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
