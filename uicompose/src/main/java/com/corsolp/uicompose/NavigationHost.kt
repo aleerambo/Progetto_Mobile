@@ -47,9 +47,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.corsolp.domain.models.News
 import com.corsolp.uicompose.screens.about.AboutUsScreen
 import com.corsolp.uicompose.screens.contact.ContactScreen
 import com.corsolp.uicompose.screens.guide.GuideScreen
+import com.corsolp.uicompose.screens.news.NewsCard
+import com.corsolp.uicompose.screens.news.NewsDetailsScreen
+import com.corsolp.uicompose.screens.news.NewsScreen
+import com.corsolp.uicompose.screens.news.NewsViewModelFactory
 import kotlinx.coroutines.launch
 
 @Composable
@@ -85,6 +90,14 @@ fun NavigationHost() {
                     navController.navigate(Routes.Home)
                 }) {
                     Text("Homepage")
+                }
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
+                    navController.navigate(Routes.News)
+                }) {
+                    Text("News")
                 }
                 Button(onClick = {
                     scope.launch {
@@ -147,7 +160,6 @@ fun NavigationHost() {
                 }
             }
 
-
             // Contenuto del NavHost
             NavHost(
                 navController,
@@ -180,6 +192,26 @@ fun NavigationHost() {
                         )
                     }
                 }
+                composable(Routes.News) {
+                    NewsScreen(
+                        viewModel = viewModel(
+                            factory = NewsViewModelFactory(
+                                UseCaseProvider.fetchNewsUseCase,
+                            )
+                        ),
+                        showDetails = { news ->
+                            val newsJsonString = Json.encodeToString(news)
+                            navController.navigate("${Routes.NewsDetails}/$newsJsonString")
+                        }
+                    )
+                }
+                composable("${Routes.NewsDetails}/{newsJsonString}") { navBackStackEntry ->
+                    val newsJsonString = navBackStackEntry.arguments?.getString("newsJsonString")
+                    val news = newsJsonString?.let { Json.decodeFromString<News>(it) }
+                    if (news != null) {
+                        NewsDetailsScreen(news = news)
+                    }
+                }
                 composable(Routes.Guide) { GuideScreen() }
                 composable(Routes.AboutUs) { AboutUsScreen() }
                 composable(Routes.Contact) { ContactScreen() }
@@ -209,6 +241,8 @@ data object Contact
 object Routes {
     const val Home = "home"
     const val DetailsScreen = "details_screen"
+    const val News = "news"
+    const val NewsDetails = "news_details"
     const val Guide = "guide"
     const val AboutUs = "about_us"
     const val Contact = "contact"
