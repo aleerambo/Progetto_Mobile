@@ -1,9 +1,13 @@
 package com.corsolp.uicompose
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.corsolp.domain.models.User
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class MainViewModel : ViewModel() {
     private val _isLoggedIn = MutableStateFlow(false)
@@ -11,6 +15,12 @@ class MainViewModel : ViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser: StateFlow<User?> = _currentUser
+
+    val userRole: StateFlow<String?> = _currentUser.map { it?.role }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
     fun login(user: User) {
         _currentUser.value = user

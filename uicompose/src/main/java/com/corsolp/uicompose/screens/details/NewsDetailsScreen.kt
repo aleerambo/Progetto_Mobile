@@ -1,4 +1,4 @@
-package com.corsolp.uicompose.screens.news
+package com.corsolp.uicompose.screens.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

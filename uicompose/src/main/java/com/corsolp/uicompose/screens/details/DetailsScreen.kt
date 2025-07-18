@@ -32,14 +32,16 @@ import com.corsolp.uicompose.R
 import androidx.core.net.toUri
 import coil3.compose.rememberAsyncImagePainter
 import com.corsolp.domain.models.Rental
+import com.corsolp.uicompose.MainViewModel
 
 @Composable
 fun DetailsScreen(
     rental: Rental,
-    isLoggedIn: Boolean,
-    isAdmin: Boolean,
+    mainViewModel: MainViewModel,
     onDeleteClick: () -> Unit
 ) {
+    val isLoggedIn by mainViewModel.isLoggedIn.collectAsState(initial = false)
+    val isAdmin = mainViewModel.isAdmin()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
@@ -264,8 +266,7 @@ fun DetailsScreenPreview() {
             email = "siisi@titti.com",
             address = "Via Roma, 123, Cesena",
         ),
-        isLoggedIn = true,
-        isAdmin = true,
+        mainViewModel = MainViewModel(),
         onDeleteClick = {},
     )
 }

@@ -1,18 +1,18 @@
-package com.corsolp.uicompose.screens.login
+package com.corsolp.uicompose.screens.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.corsolp.domain.usecases.LoginUseCase
 import com.corsolp.domain.usecases.RegisterUseCase
 
-class LoginViewModelFactory(
+class AuthViewModelFactory(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(
+        if (modelClass.isAssignableFrom(AuthViewModel::class.java)) {
+            return AuthViewModel(
                 loginUseCase,
                 registerUseCase
             ) as T

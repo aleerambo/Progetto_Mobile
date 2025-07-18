@@ -13,26 +13,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.corsolp.domain.di.UseCaseProvider
 import com.corsolp.domain.models.Rental
 import com.corsolp.uicompose.screens.details.DetailsScreen
 import com.corsolp.uicompose.screens.home.HomeScreen
 import com.corsolp.uicompose.screens.home.HomeViewModelFactory
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -49,10 +44,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.corsolp.domain.models.News
 import com.corsolp.uicompose.screens.about.AboutUsScreen
+import com.corsolp.uicompose.screens.auth.AuthViewModelFactory
+import com.corsolp.uicompose.screens.auth.LoginScreen
 import com.corsolp.uicompose.screens.contact.ContactScreen
 import com.corsolp.uicompose.screens.guide.GuideScreen
-import com.corsolp.uicompose.screens.news.NewsCard
-import com.corsolp.uicompose.screens.news.NewsDetailsScreen
+import com.corsolp.uicompose.screens.details.NewsDetailsScreen
 import com.corsolp.uicompose.screens.news.NewsScreen
 import com.corsolp.uicompose.screens.news.NewsViewModelFactory
 import kotlinx.coroutines.launch
@@ -63,6 +59,8 @@ fun NavigationHost() {
     val currentSection = "Homepage"
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val mainViewModel: MainViewModel = viewModel()
+    val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
 
     ModalDrawer(
         drawerState = drawerState,
@@ -123,6 +121,34 @@ fun NavigationHost() {
                 }) {
                     Text("Contatti")
                 }
+                Button(
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                        if (isLoggedIn) {
+                            mainViewModel.logout() // Effettua il logout
+                        } else {
+                            navController.navigate(Routes.Login) // Naviga alla schermata di login
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = if (mainViewModel.isLoggedIn.collectAsState(initial = false).value) {
+                            colorResource(id = R.color.red) // Colore rosso per il logout
+                        } else {
+                            colorResource(id = R.color.blue) // Colore blu per il login
+                        }
+                    )
+                ) {
+                    Text(
+                        text = if (mainViewModel.isLoggedIn.collectAsState(initial = false).value) {
+                            "Logout"
+                        } else {
+                            "Login"
+                        },
+                        color = colorResource(id = R.color.white)
+                    )
+                }
             }
         }
     ) {
@@ -139,10 +165,18 @@ fun NavigationHost() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     // Icona tonda come pulsante
+                    val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
+                    val isAdmin = mainViewModel.isAdmin()
+                    val userIconColor = when {
+                        !isLoggedIn -> colorResource(id = R.color.gray)
+                        isAdmin     -> colorResource(id = R.color.red)
+                        else        -> colorResource(id = R.color.blue)
+                    }
+
                     Icon(
                         imageVector = Icons.Default.Person,
                         contentDescription = "User Icon",
-                        tint = colorResource(id = R.color.gray),
+                        tint = userIconColor,
                         modifier = Modifier
                             .background(colorResource(id = R.color.light_gray), shape = CircleShape)
                             .padding(dimensionResource(id = R.dimen.spacing_small))
@@ -179,15 +213,13 @@ fun NavigationHost() {
                     )
                 }
                 composable("${Routes.DetailsScreen}/{rentalJsonString}") { navBackStackEntry ->
-                    val mainViewModel: MainViewModel = viewModel()
                     val rentalJsonString = navBackStackEntry.arguments?.getString("rentalJsonString")
                     val rental = rentalJsonString?.let { Json.decodeFromString<Rental>(it) }
 
                     if (rental != null) {
                         DetailsScreen(
                             rental = rental,
-                            isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value,
-                            isAdmin = mainViewModel.isAdmin(),
+                            mainViewModel = mainViewModel,
                             onDeleteClick = { /* Logica per eliminare */ }
                         )
                     }
@@ -215,7 +247,22 @@ fun NavigationHost() {
                 composable(Routes.Guide) { GuideScreen() }
                 composable(Routes.AboutUs) { AboutUsScreen() }
                 composable(Routes.Contact) { ContactScreen() }
-
+                composable(Routes.Login) {
+                    LoginScreen(
+                        viewModel = viewModel(
+                            factory = AuthViewModelFactory(
+                                UseCaseProvider.loginUseCase,
+                                UseCaseProvider.registerUseCase
+                            )
+                        ),
+                        mainViewModel = mainViewModel,
+                        onLoginSuccess = {
+                            navController.navigate(Routes.Home) {
+                                popUpTo(Routes.Login) { inclusive = true }
+                            }
+                        }
+                    )
+                }
             }
         }
     }
@@ -246,4 +293,5 @@ object Routes {
     const val Guide = "guide"
     const val AboutUs = "about_us"
     const val Contact = "contact"
+    const val Login = "login"
 }
