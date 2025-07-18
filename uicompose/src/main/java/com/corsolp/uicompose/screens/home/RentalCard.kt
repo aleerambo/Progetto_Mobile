@@ -57,7 +57,7 @@ fun RentalCard(
                         style = TextStyle(
                             fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.Gray
+                            color = colorResource(R.color.gray)
                         )
                     )
 
@@ -67,7 +67,7 @@ fun RentalCard(
                         style = TextStyle(
                             fontSize = dimensionResource(R.dimen.txt_size_large).value.sp,
                             fontWeight = FontWeight.SemiBold,
-                            color = Color.DarkGray
+                            color = colorResource(R.color.blue)
                         )
                     )
                 }
@@ -75,13 +75,13 @@ fun RentalCard(
                     modifier = Modifier
                         .padding(dimensionResource(R.dimen.spacing_small))
                         .clip(RoundedCornerShape(dimensionResource(R.dimen.spacing_xs)))
-                        .background(colorResource(R.color.blue))
+                        .background(colorResource(R.color.green))
                 ) {
                     Text(
                         text = "${rental.price}€",
                         modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)),
                         style = TextStyle(
-                            fontSize = dimensionResource(R.dimen.txt_size_small).value.sp,
+                            fontSize = dimensionResource(R.dimen.txt_size_caption).value.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -116,7 +116,10 @@ fun RentalCardPreview() {
             services = listOf("WiFi", "Parcheggio", "Piscina"),
             price = 700.0,
             favorite = false,
-            type = RentalTypeEnum.APARTMENT
+            type = RentalTypeEnum.APARTMENT,
+            phoneNumber = "123456789",
+            email = "dddd@saaaa.xc",
+            address = "Via Roma, 123, Milano",
         ),
         onItemClick = {}
     )

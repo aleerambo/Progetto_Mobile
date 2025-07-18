@@ -3,4 +3,40 @@
     <string name="room">Room</string>
     <string name="apartment">Apartment</string>
     <string name="bed">Bed Space</string>
+    <string name="about_us">Who we are</string>
+    <string name="about_us_text">
+        Welcome to StudentHome!
+        We are a platform created by students for students, with the goal of simplifying the search for university housing. Our dream? To create a one-stop shop for finding apartments, rooms, and beds quickly, safely, and reliably.
+        On StudentHome, you\'ll find only listings designed with student needs in mind, with special offers and authentic reviews to help you make the right choice. We believe in the power of sharing and transparency: that\'s why we focus on an active community, where home seekers and landlords can connect directly.
+        Whether you\'re looking for your first apartment or a cozy room near your university, we\'re here to make the process simple and stress-free. StudentHome is your new home… before your next home!
+    </string>
+    <string name="guide">Guide to finding the ideal accommodation</string>
+    <string name="guide_text">
+        Finding the perfect place to live can seem like a challenge, but with some targeted advice, you can simplify the process and make the right choice for your needs.
+        At StudentHome, we\'re here to help you find your next home with ease.
+        1. Define your priorities
+        Before starting, list your needs: proximity to the university, budget, number of roommates, and essential amenities (e.g., Wi-Fi, washing machine, air conditioning).
+        2. Explore options
+        Photos and detailed descriptions will help you get a clear idea.
+        3. Evaluate the neighborhood
+        Choose a safe neighborhood with good public transportation. Read other students\' reviews to get a feel for the area.
+        4. Visit in person (if possible)
+        Photos are helpful, but a live visit will allow you to verify every detail and get a sense of the place\'s atmosphere. Don\'t overlook aspects like brightness, condition of furnishings, and soundproofing.
+        5. Make an informed decision
+        Once you\'ve found accommodation that meets your needs, don\'t wait too long. The student rental market is very dynamic, and your future home could sell out quickly!
+    </string>
+    <string name="contact_us">Contact Us</string>
+    <string name="contact_us1">
+        Need assistance or want to get in touch with us? We are here to help!
+        You can email us at:
+    </string>
+    <string name="contact_us2">
+        Or contact us by phone at:
+    </string>
+    <string name="contact_us3">
+        Our team is available to answer your questions, clarify doubts, and provide the support you need to find the perfect home for your studies.
+        Don\'t hesitate to contact us, we are here for you!
+    </string>
+    <string name="contact_us_email">studenthome@support.com</string>
+    <string name="contact_us_phone">051 526398</string>
 </resources>

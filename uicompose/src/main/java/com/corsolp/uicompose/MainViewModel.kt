@@ -25,4 +25,12 @@ class MainViewModel : ViewModel() {
     fun isAdmin(): Boolean {
         return _currentUser.value?.role == "admin"
     }
+
+    fun deleteRentalPost(postId: Int): Unit {
+        // Logic to delete a rental post by its ID
+        // This would typically involve calling a use case or repository method
+        // For now, we can just log the action or update the state accordingly
+        println("Deleting rental post with ID: $postId")
+        // You would implement the actual deletion logic here
+    }
 }
