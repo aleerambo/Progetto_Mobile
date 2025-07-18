@@ -152,93 +152,103 @@ fun DetailsScreen(
                     }
                 }
 
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.spacing_small))
                 ) {
-                    // Pulsante Contatta
-                    Button(
-                        onClick = {
-                            if (isLoggedIn) {
-                                val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                    data = "mailto:${rental.email}".toUri()
-                                }
-                                context.startActivity(intent)
-                            } else {
-                                showLoginSnackbarForEmail = true
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.blue))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        Icon(Icons.Default.Email, contentDescription = null, tint = colorResource(R.color.white))
-                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
-                        Text(
-                            text = "Contatta",
-                            style = TextStyle(
-                                color = colorResource(R.color.white),
-                            )
-                        )
-                    }
-
-                    // Pulsante Chiama
-                    Button(
-                        onClick = {
-                            if (isLoggedIn) {
-                                val intent = Intent(Intent.ACTION_DIAL).apply {
-                                    data = "tel:${rental.phoneNumber}".toUri()
-                                }
-                                context.startActivity(intent)
-                            } else {
-                                showLoginSnackbarForPhone = true
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.green))
-                    ) {
-                        Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white))
-                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
-                        Text(
-                            text = "Chiama",
-                            style = TextStyle(
-                                color = colorResource(R.color.white),
-                            )
-                        )
-                    }
-
-                    // Pulsante Apri in Google Maps
-                    Button(
-                        onClick = {
-                            val gmmIntentUri = "geo:0,0?q=${Uri.encode(rental.address)}".toUri()
-                            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-                                setPackage("com.google.android.apps.maps")
-                            }
-                            context.startActivity(mapIntent)
-                        },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.light_gray))
-                    ) {
-                        Icon(
-                            Icons.Default.Map,
-                            contentDescription = null,
-                        )
-                        Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
-                        Text(
-                            text = "Mappa"
-                        )
-                    }
-
-                    // Pulsante Elimina (solo admin)
-                    if (isAdmin) {
+                        // Pulsante Contatta
                         Button(
-                            onClick = onDeleteClick,
-                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.red))
+                            onClick = {
+                                if (isLoggedIn) {
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        data = "mailto:${rental.email}".toUri()
+                                    }
+                                    context.startActivity(intent)
+                                } else {
+                                    showLoginSnackbarForEmail = true
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.blue))
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = null, tint = colorResource(R.color.white))
+                            Icon(Icons.Default.Email, contentDescription = null, tint = colorResource(R.color.white))
                             Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                             Text(
-                                text = "Elimina",
+                                text = "Contatta",
                                 style = TextStyle(
                                     color = colorResource(R.color.white),
                                 )
                             )
+                        }
+
+                        // Pulsante Chiama
+                        Button(
+                            onClick = {
+                                if (isLoggedIn) {
+                                    val intent = Intent(Intent.ACTION_DIAL).apply {
+                                        data = "tel:${rental.phoneNumber}".toUri()
+                                    }
+                                    context.startActivity(intent)
+                                } else {
+                                    showLoginSnackbarForPhone = true
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.green))
+                        ) {
+                            Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white))
+                            Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                            Text(
+                                text = "Chiama",
+                                style = TextStyle(
+                                    color = colorResource(R.color.white),
+                                )
+                            )
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        // Pulsante Apri in Google Maps
+                        Button(
+                            onClick = {
+                                val gmmIntentUri = "geo:0,0?q=${Uri.encode(rental.address)}".toUri()
+                                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+                                    setPackage("com.google.android.apps.maps")
+                                }
+                                context.startActivity(mapIntent)
+                            },
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.light_gray))
+                        ) {
+                            Icon(
+                                Icons.Default.Map,
+                                contentDescription = null,
+                            )
+                            Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                            Text(
+                                text = "Mappa"
+                            )
+                        }
+
+                        // Pulsante Elimina (solo admin)
+                        if (isAdmin) {
+                            Button(
+                                onClick = onDeleteClick,
+                                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.red))
+                            ) {
+                                Icon(Icons.Default.Delete, contentDescription = null, tint = colorResource(R.color.white))
+                                Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
+                                Text(
+                                    text = "Elimina",
+                                    style = TextStyle(
+                                        color = colorResource(R.color.white),
+                                    )
+                                )
+                            }
                         }
                     }
                 }

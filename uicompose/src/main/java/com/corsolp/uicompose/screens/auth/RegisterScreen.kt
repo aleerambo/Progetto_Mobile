@@ -11,6 +11,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,37 +26,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.corsolp.uicompose.MainViewModel
 import com.corsolp.uicompose.R
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     viewModel: AuthViewModel,
-    mainViewModel: MainViewModel,
-    onLoginSuccess: () -> Unit,
-    onNavigateToRegister: () -> Unit // Callback per navigare alla registrazione
+    onRegisterSuccess: () -> Unit,
+    onBackToLogin: () -> Unit // Callback per tornare al login
 ) {
+    var name by remember { mutableStateOf("") }
+    var surname by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
-    val loginSuccessMessage = stringResource(R.string.login_success)
-    val loginFailedMessage = stringResource(R.string.login_failed)
+    val registerSuccessMessage = stringResource(R.string.register_success)
+    val registerFailedMessage = stringResource(R.string.register_failed)
 
     LaunchedEffect(authState) {
         authState?.let {
             showDialog = true
             if (it.isSuccess) {
-                val user = it.getOrNull()
-                if (user != null) {
-                    mainViewModel.login(user)
-                    dialogMessage = loginSuccessMessage
-                    onLoginSuccess()
-                }
+                dialogMessage = registerSuccessMessage
+                onRegisterSuccess()
             } else {
-                dialogMessage = loginFailedMessage
+                dialogMessage = registerFailedMessage
             }
         }
     }
@@ -66,6 +64,27 @@ fun LoginScreen(
             .padding(dimensionResource(R.dimen.spacing_medium)),
         verticalArrangement = Arrangement.Center
     ) {
+        TextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text(stringResource(R.string.name)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
+        TextField(
+            value = surname,
+            onValueChange = { surname = it },
+            label = { Text(stringResource(R.string.surname)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
+        TextField(
+            value = phone,
+            onValueChange = { phone = it },
+            label = { Text(stringResource(R.string.phone)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
         TextField(
             value = email,
             onValueChange = { email = it },
@@ -82,26 +101,26 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
         Button(
-            onClick = { viewModel.login(email, password) },
+            onClick = { viewModel.register(name, surname, phone, email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Login")
+            Text(stringResource(R.string.register))
         }
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
-        Text(stringResource(R.string.invite_to_register))
+        Text(stringResource(R.string.alredy_registered))
         Button(
-            onClick = { onNavigateToRegister() }, // Naviga alla registrazione
+            onClick = { onBackToLogin() }, // Naviga al Login
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.blue))
         ) {
-            Text(stringResource(R.string.register), color = colorResource(R.color.white))
+            Text("Login", color = colorResource(R.color.white))
         }
     }
 
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(stringResource(R.string.login_result)) },
+            title = { Text(stringResource(R.string.register_result)) },
             text = { Text(dialogMessage) },
             confirmButton = {
                 Button(onClick = { showDialog = false }) {

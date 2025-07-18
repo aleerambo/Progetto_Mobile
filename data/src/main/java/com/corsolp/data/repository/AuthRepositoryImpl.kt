@@ -49,12 +49,13 @@ class AuthRepositoryImpl(
     override suspend fun register(
         name: String,
         surname: String,
-        email: String,
         phone: String,
+        email: String,
         password: String
     ): Result<User> {
         return try {
-            val registerResponse: AuthResponse = authApi.register(RegisterRequest(name, surname, email, phone, password))
+            println("AuthRepositoryImpl: Sending registration request for: $email")
+            val registerResponse: AuthResponse = authApi.register(RegisterRequest(name, surname, phone, email, password))
 
             // Salvo il token se la registrazione è andata a buon fine
             registerResponse.token?.let { tokenManager.saveToken(it) }

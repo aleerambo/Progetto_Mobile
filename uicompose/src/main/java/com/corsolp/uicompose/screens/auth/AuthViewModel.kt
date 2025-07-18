@@ -24,10 +24,15 @@ class AuthViewModel(
     }
 
     fun register(
-        nome: String, cognome: String, mail: String, telefono: String, password: String
+        nome: String,
+        cognome: String,
+        telefono: String,
+        mail: String,
+        password: String
     ) {
         viewModelScope.launch {
-            _authState.value = registerUseCase(nome, cognome, mail, telefono, password)
+            println("AuthViewModel: Registering user: $nome $cognome, $mail")
+            _authState.value = registerUseCase(nome, cognome, telefono, mail, password)
         }
     }
 }

@@ -46,6 +46,7 @@ import com.corsolp.domain.models.News
 import com.corsolp.uicompose.screens.about.AboutUsScreen
 import com.corsolp.uicompose.screens.auth.AuthViewModelFactory
 import com.corsolp.uicompose.screens.auth.LoginScreen
+import com.corsolp.uicompose.screens.auth.RegisterScreen
 import com.corsolp.uicompose.screens.contact.ContactScreen
 import com.corsolp.uicompose.screens.guide.GuideScreen
 import com.corsolp.uicompose.screens.details.NewsDetailsScreen
@@ -56,7 +57,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NavigationHost() {
     val navController = rememberNavController()
-    val currentSection = "Homepage"
+    val menu = "Menu"
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val mainViewModel: MainViewModel = viewModel()
@@ -128,12 +129,15 @@ fun NavigationHost() {
                         }
                         if (isLoggedIn) {
                             mainViewModel.logout() // Effettua il logout
+                            navController.navigate(Routes.Home) { // Naviga alla homepage
+                                popUpTo(Routes.Home) { inclusive = true } // Rimuove le schermate precedenti dallo stack
+                            }
                         } else {
                             navController.navigate(Routes.Login) // Naviga alla schermata di login
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if (mainViewModel.isLoggedIn.collectAsState(initial = false).value) {
+                        backgroundColor = if (isLoggedIn) {
                             colorResource(id = R.color.red) // Colore rosso per il logout
                         } else {
                             colorResource(id = R.color.blue) // Colore blu per il login
@@ -141,7 +145,7 @@ fun NavigationHost() {
                     )
                 ) {
                     Text(
-                        text = if (mainViewModel.isLoggedIn.collectAsState(initial = false).value) {
+                        text = if (isLoggedIn) {
                             "Logout"
                         } else {
                             "Login"
@@ -153,7 +157,7 @@ fun NavigationHost() {
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            // Barra superiore con icona e nome sezione
+            // Barra superiore con icona
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -185,9 +189,8 @@ fun NavigationHost() {
                             }
                     )
                     Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.spacing_small)))
-                    // Nome della sezione
                     Text(
-                        text = currentSection,
+                        text = menu,
                         color = colorResource(id = R.color.text_color),
                         style = TextStyle(fontWeight = FontWeight.Bold)
                     )
@@ -260,6 +263,29 @@ fun NavigationHost() {
                             navController.navigate(Routes.Home) {
                                 popUpTo(Routes.Login) { inclusive = true }
                             }
+                        },
+                        onNavigateToRegister = {
+                            navController.navigate(Routes.Register) // Naviga alla schermata di registrazione
+                        }
+                    )
+                }
+                composable(Routes.Register) {
+                    RegisterScreen(
+                        viewModel = viewModel(
+                            factory = AuthViewModelFactory(
+                                UseCaseProvider.loginUseCase,
+                                UseCaseProvider.registerUseCase
+                            )
+                        ),
+                        onRegisterSuccess = {
+                            navController.navigate(Routes.Login) {
+                                popUpTo(Routes.Register) { inclusive = true }
+                            }
+                        },
+                        onBackToLogin = {
+                            navController.navigate(Routes.Login) {
+                                popUpTo(Routes.Register) { inclusive = true }
+                            }
                         }
                     )
                 }
@@ -294,4 +320,5 @@ object Routes {
     const val AboutUs = "about_us"
     const val Contact = "contact"
     const val Login = "login"
+    const val Register = "register"
 }

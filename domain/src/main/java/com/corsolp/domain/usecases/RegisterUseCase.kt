@@ -24,10 +24,11 @@ class RegisterUseCaseImpl(
     override suspend fun invoke(
         name: String,
         surname: String,
-        email: String,
         phone: String,
+        email: String,
         password: String
     ): Result<User> {
-        return authRepository.register(name, surname, email, phone, password)
+        println("RegisterUseCase: Calling repository to register user: $email")
+        return authRepository.register(name, surname, phone, email, password)
     }
 }
