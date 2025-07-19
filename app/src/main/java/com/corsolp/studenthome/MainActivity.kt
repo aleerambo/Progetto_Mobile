@@ -32,6 +32,6 @@ class MainActivity : Application() {
         RepositoryProviderImpl.tokenManager = tokenManager
 
         // 5. Setup dei use case
-        UseCaseProvider.setup(RepositoryProviderImpl())
+        UseCaseProvider.setup(RepositoryProviderImpl(context = this.applicationContext))
     }
 }
