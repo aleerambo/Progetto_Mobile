@@ -100,7 +100,7 @@ interface RentApi {
         @Part("mq") squareMeters: Int,
         @Part("piano") floor: Int,
         @Part("indirizzo") address: String,
-        @Part("selectedServizi") selectedServices: Array<Int>,
+        @Part("selectedServizi") selectedServices: String,
         @Part("tipologia") type: Int,
         @Part("numero_inquilini") numberOfTenants: Int,
         @Part("contratto_min") minContract: Int,

@@ -31,7 +31,6 @@ class AuthViewModel(
         password: String
     ) {
         viewModelScope.launch {
-            println("AuthViewModel: Registering user: $nome $cognome, $mail")
             _authState.value = registerUseCase(nome, cognome, telefono, mail, password)
         }
     }

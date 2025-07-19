@@ -24,6 +24,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.corsolp.domain.di.UseCaseProvider
 import com.corsolp.domain.models.Rental
+import com.corsolp.uicompose.screens.create.CreateRentalScreen
+import com.corsolp.uicompose.screens.create.CreateRentalViewModelFactory
 import com.corsolp.uicompose.screens.details.DetailsScreen
 import com.corsolp.uicompose.screens.home.HomeScreen
 import com.corsolp.uicompose.screens.home.HomeViewModelFactory
@@ -121,6 +123,18 @@ fun NavigationHost() {
                     navController.navigate(Routes.Contact)
                 }) {
                     Text("Contatti")
+                }
+                if (isLoggedIn) {
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                drawerState.close()
+                            }
+                            navController.navigate(Routes.CreateRental)
+                        },
+                    ) {
+                        Text("Crea Annuncio")
+                    }
                 }
                 Button(
                     onClick = {
@@ -250,6 +264,22 @@ fun NavigationHost() {
                 composable(Routes.Guide) { GuideScreen() }
                 composable(Routes.AboutUs) { AboutUsScreen() }
                 composable(Routes.Contact) { ContactScreen() }
+                composable(Routes.CreateRental) {
+                    CreateRentalScreen(
+                        viewModel = viewModel(
+                            factory = CreateRentalViewModelFactory(
+                                UseCaseProvider.createRentalPostUseCase,
+                                UseCaseProvider.fetchServiceListUseCase,
+                                UseCaseProvider.fetchNeighborhoodListUseCase,
+                                UseCaseProvider.fetchRentalTypeListUseCase
+                            )
+                        ),
+                        onImageSelected = { /* Logica per gestire l'immagine */ },
+                        onPostCreated = {
+                            navController.navigate(Routes.Home) { popUpTo(Routes.Home) { inclusive = true } }
+                        }
+                    )
+                }
                 composable(Routes.Login) {
                     LoginScreen(
                         viewModel = viewModel(
@@ -321,4 +351,5 @@ object Routes {
     const val Contact = "contact"
     const val Login = "login"
     const val Register = "register"
+    const val CreateRental = "create_rental"
 }

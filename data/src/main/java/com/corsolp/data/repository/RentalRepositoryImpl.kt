@@ -177,25 +177,25 @@ class RentalRepositoryImpl(
         squareMeters: Int,
         floor: Int,
         address: String,
-        selectedServices: List<Int>,
+        selectedServices: String,
         type: Int,
         numberOfTenants: Int,
         minContract: Int,
         maxContract: Int
     ): Result<Unit> = try {
         val response: Response<Unit> = rentApi.postRental(
-            idArea            = idArea,
-            price             = price,
-            description       = description,
-            rooms             = rooms,
-            squareMeters      = squareMeters,
-            floor             = floor,
-            address           = address,
-            selectedServices  = selectedServices.toTypedArray(),
-            type              = type,
-            numberOfTenants   = numberOfTenants,
-            minContract       = minContract,
-            maxContract       = maxContract
+            idArea = idArea,
+            price = price,
+            description = description,
+            rooms = rooms,
+            squareMeters = squareMeters,
+            floor = floor,
+            address = address,
+            selectedServices = selectedServices,
+            type = type,
+            numberOfTenants = numberOfTenants,
+            minContract = minContract,
+            maxContract = maxContract
         )
         if (response.isSuccessful) {
                 // Facoltativo: ricarico la lista completa degli annunci

@@ -28,7 +28,7 @@ interface RentalRepository {
         squareMeters: Int,
         floor: Int,
         address: String,
-        selectedServices: List<Int>,
+        selectedServices: String,
         type: Int,
         numberOfTenants: Int,
         minContract: Int,
