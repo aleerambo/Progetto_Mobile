@@ -1,5 +1,10 @@
 package com.corsolp.data.repository
 
+import android.content.Context
+import android.util.Log
+import com.corsolp.data.local.db.AppDatabase
+import com.corsolp.data.local.entities.NewsLocalModel
+import com.corsolp.data.local.entities.RentalLocalModel
 import com.corsolp.data.remote.RentApi
 import com.corsolp.data.remote.models.rent.GetAllRentalPosts
 import com.corsolp.data.remote.models.rent.GetFavourites
@@ -21,11 +26,15 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class RentalRepositoryImpl(
+    private val context: Context,
     private val rentApi: RentApi
 ) : RentalRepository {
 
     // Usare un scope su IO per tutte le chiamate di rete
     private val scope = CoroutineScope(Dispatchers.IO)
+
+    private val rentalDao = AppDatabase.getInstance(context = context).rentalDao()
+    private val newsDao = AppDatabase.getInstance(context = context).newsDao()
 
     // Flussi “live”
     private val _newsList             = MutableStateFlow<List<News>>(emptyList())
@@ -49,7 +58,8 @@ class RentalRepositoryImpl(
     init {
         // Carico tutto al momento della creazione del repository
         scope.launch {
-            // Carico News
+            // Carico News, prima da locale
+            fetchLocalNews()
             try {
                 val newsApiList = rentApi.getNews() // List<GetNews>
                 val newsDomain = newsApiList.map { api ->
@@ -61,7 +71,15 @@ class RentalRepositoryImpl(
                         pictureUrl = api.fotoNews ?: "",
                     )
                 }
-                _newsList.value = newsDomain
+                // Salvo nel DB
+                val localModels = newsDomain.map { it.toLocalModel() }
+                newsDao.insertNews(localModels)
+
+                // Rimuovo vecchi record non più esistenti
+                newsDao.deleteNotIn(localModels.map { it.id })
+
+                // Aggiorno flusso dallo storage locale aggiornato
+                fetchLocalNews()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -109,13 +127,22 @@ class RentalRepositoryImpl(
                 e.printStackTrace()
             }
 
-            // Carico Tutti gli Annunci
+            // Carico Tutti gli Annunci, prima da locale
+            fetchLocalRentalPosts()
             try {
                 val allApiList = rentApi.getAllRentalPosts() // List<GetAllRentalPosts>
                 val allDomain = allApiList.map { api ->
                     api.toDomainFromAll(favorite = false)
                 }
-                _allRentalPosts.value = allDomain
+                // Salvo nel DB
+                val localModels = allDomain.map { it.toLocalModel() }
+                rentalDao.insertRentalLocalModel(localModels)
+
+                // Rimuovo vecchi record non più esistenti
+                rentalDao.deleteNotIn(localModels.map { it.id })
+
+                // Aggiorno flusso dallo storage locale aggiornato
+                fetchLocalRentalPosts()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -141,6 +168,19 @@ class RentalRepositoryImpl(
     // -----------------------------------
     // Operazioni “one‐shot” (suspend)
     // -----------------------------------
+
+    private suspend fun fetchLocalNews() {
+        val localNews = newsDao.getAllNews()
+            .map { it.toDomain() }
+        _newsList.emit(localNews)
+    }
+
+    private suspend fun fetchLocalRentalPosts() {
+        val localRentals = rentalDao.getAllRentals()
+            .map { it.toDomain() }
+        _allRentalPosts.emit(localRentals)
+    }
+
 
     override suspend fun fetchNewsById(id: Int): Result<News> {
         return try {
@@ -423,4 +463,64 @@ class RentalRepositoryImpl(
             address = this.indirizzo ?: "",
         )
     }
+
+    // From local DB to domain
+    private fun NewsLocalModel.toDomain(): News = News(
+        id = id,
+        title = title,
+        content = content,
+        publishDate = publishDate,
+        pictureUrl = pictureUrl
+    )
+
+    // From domain to local DB
+    private fun News.toLocalModel(): NewsLocalModel = NewsLocalModel(
+        id = id,
+        title = title,
+        content = content,
+        publishDate = publishDate,
+        pictureUrl = pictureUrl
+    )
+
+    private fun RentalLocalModel.toDomain(): Rental = Rental(
+        id = id,
+        description = description,
+        pictureUrl = pictureUrl,
+        rooms = rooms,
+        surface = surface,
+        floor = floor,
+        services = services.split(",").map { it.trim() },
+        price = price,
+        favorite = favorite,
+        type = when (type.lowercase()) {
+            "stanza" -> RentalTypeEnum.ROOM
+            "appartamento" -> RentalTypeEnum.APARTMENT
+            "posto letto" -> RentalTypeEnum.BED
+            else -> throw IllegalArgumentException("Tipo sconosciuto: $type")
+        },
+        phoneNumber = phoneNumber,
+        email = email,
+        address = address
+    )
+
+    private fun Rental.toLocalModel(): RentalLocalModel = RentalLocalModel(
+        id = id,
+        description = description,
+        pictureUrl = pictureUrl,
+        rooms = rooms,
+        surface = surface,
+        floor = floor,
+        services = services.joinToString(","),
+        price = price,
+        favorite = favorite,
+        type = when (type) {
+            RentalTypeEnum.ROOM -> "stanza"
+            RentalTypeEnum.APARTMENT -> "appartamento"
+            RentalTypeEnum.BED -> "posto letto"
+        },
+        phoneNumber = phoneNumber,
+        email = email,
+        address = address
+    )
+
 }
