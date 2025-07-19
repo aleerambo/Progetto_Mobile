@@ -8,7 +8,7 @@ import com.corsolp.data.local.entities.RentalLocalModel
 
 @Dao
 interface RentalDao {
-    @Query("SELECT * FROM rentals")
+    @Query("SELECT * FROM rentals ORDER BY id DESC")
     fun getAllRentals(): List<RentalLocalModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
