@@ -1,12 +1,13 @@
 package com.corsolp.data.di
 
+import android.content.Context
 import com.corsolp.data.local.TokenManager
 import com.corsolp.data.remote.RetrofitClient
 import com.corsolp.data.repository.AuthRepositoryImpl
 import com.corsolp.data.repository.RentalRepositoryImpl
 import com.corsolp.domain.di.RepositoryProvider
 
-class RepositoryProviderImpl : RepositoryProvider {
+class RepositoryProviderImpl(private val context: Context) : RepositoryProvider {
     companion object {
         lateinit var tokenManager: TokenManager
     }
@@ -21,6 +22,9 @@ class RepositoryProviderImpl : RepositoryProvider {
 
     // RentalRepositoryImpl
     override val rentalRepository by lazy {
-        RentalRepositoryImpl(retrofitClient.rentApi)
+        RentalRepositoryImpl(
+            rentApi = retrofitClient.rentApi,
+            context = context
+        )
     }
 }
