@@ -79,6 +79,7 @@ class AuthRepositoryImpl(
         return try {
             // Se anche postLogout non restituisce nulla di utile, lo chiamiamo e
             // non ci interessa il risultato: se lancia, intercettiamo, altrimenti ok
+            println("AuthRepositoryImpl: Chiamata a postLogout")
             authApi.postLogout()
             tokenManager.clearToken()
             Result.success(Unit)

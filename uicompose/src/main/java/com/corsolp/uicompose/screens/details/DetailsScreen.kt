@@ -48,6 +48,7 @@ fun DetailsScreen(
     // FLAGS per mostrare snackbar
     var showLoginSnackbarForEmail by remember { mutableStateOf(false) }
     var showLoginSnackbarForPhone by remember { mutableStateOf(false) }
+    var errorMessageState by remember { mutableStateOf<String?>(null) }
 
     // EFFETTI LATERALI sicuri
     if (showLoginSnackbarForEmail) {
@@ -61,6 +62,13 @@ fun DetailsScreen(
         LaunchedEffect(scaffoldState.snackbarHostState) {
             scaffoldState.snackbarHostState.showSnackbar("Effettua il login per chiamare")
             showLoginSnackbarForPhone = false
+        }
+    }
+
+    if (errorMessageState != null) {
+        LaunchedEffect(errorMessageState) {
+            scaffoldState.snackbarHostState.showSnackbar("Errore: $errorMessageState")
+            errorMessageState = null // Resetta lo stato dopo aver mostrato lo Snackbar
         }
     }
 
@@ -237,7 +245,17 @@ fun DetailsScreen(
                         // Pulsante Elimina (solo admin)
                         if (isAdmin) {
                             Button(
-                                onClick = onDeleteClick,
+                                onClick = {
+                                    mainViewModel.deleteRentalPost(
+                                        postId = rental.id,
+                                        onSuccess = {
+                                            onDeleteClick()
+                                        },
+                                        onError = { errorMessage ->
+                                            errorMessageState = errorMessage // Imposta il messaggio di errore
+                                        }
+                                    )
+                                },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(R.color.red))
                             ) {
                                 Icon(Icons.Default.Delete, contentDescription = null, tint = colorResource(R.color.white))
@@ -254,29 +272,5 @@ fun DetailsScreen(
                 }
             }
         }
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DetailsScreenPreview() {
-    DetailsScreen(
-        rental = Rental(
-            id = 1,
-            description = "Ampio appartamento vista mare",
-            pictureUrl = null,
-            rooms = 3,
-            surface = 80,
-            floor = 2,
-            services = listOf("WiFi", "Parcheggio", "Piscina"),
-            price = 700.0,
-            favorite = false,
-            type = RentalTypeEnum.APARTMENT,
-            phoneNumber = "3635521489",
-            email = "siisi@titti.com",
-            address = "Via Roma, 123, Cesena",
-        ),
-        mainViewModel = MainViewModel(),
-        onDeleteClick = {},
     )
 }

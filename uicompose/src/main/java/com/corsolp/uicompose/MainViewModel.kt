@@ -3,13 +3,19 @@ package com.corsolp.uicompose
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.corsolp.domain.models.User
+import com.corsolp.domain.usecases.DeleteRentalPostUseCase
+import com.corsolp.domain.usecases.LogoutUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    private val deleteRentalPostUseCase: DeleteRentalPostUseCase,
+    private val logoutUseCase: LogoutUseCase
+) : ViewModel() {
     private val _isLoggedIn = MutableStateFlow(false)
     val isLoggedIn: StateFlow<Boolean> = _isLoggedIn
 
@@ -28,19 +34,32 @@ class MainViewModel : ViewModel() {
     }
 
     fun logout() {
-        _currentUser.value = null
-        _isLoggedIn.value = false
+        println("MainViewModel: logout() CHIAMATO")
+        viewModelScope.launch {
+            val result = logoutUseCase()
+            if (result.isSuccess) {
+                _currentUser.value = null
+                _isLoggedIn.value = false
+            } else {
+                // Gestisci eventuali errori di logout, ad esempio log o notifiche
+                val errorMessage = result.exceptionOrNull()?.message ?: "Errore sconosciuto durante il logout"
+                println(errorMessage)
+            }
+        }
     }
 
     fun isAdmin(): Boolean {
         return _currentUser.value?.role == "admin"
     }
 
-    fun deleteRentalPost(postId: Int): Unit {
-        // Logic to delete a rental post by its ID
-        // This would typically involve calling a use case or repository method
-        // For now, we can just log the action or update the state accordingly
-        println("Deleting rental post with ID: $postId")
-        // You would implement the actual deletion logic here
+    fun deleteRentalPost(postId: Int, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            val result = deleteRentalPostUseCase(postId)
+            if (result.isSuccess) {
+                onSuccess()
+            } else {
+                onError(result.exceptionOrNull()?.message ?: "Errore sconosciuto")
+            }
+        }
     }
 }

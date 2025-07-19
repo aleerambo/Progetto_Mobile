@@ -21,6 +21,7 @@ class TokenManager(
     }
 
     fun clearToken() {
+        println("Chiamata a clearToken")
         prefs.edit { remove(KEY_JWT) }
     }
 }

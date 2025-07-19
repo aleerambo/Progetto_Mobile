@@ -62,7 +62,12 @@ fun NavigationHost() {
     val menu = "Menu"
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val mainViewModel: MainViewModel = viewModel()
+    val mainViewModel: MainViewModel = viewModel(
+        factory = MainViewModelFactory(
+            UseCaseProvider.deleteRentalPostUseCase,
+            UseCaseProvider.logoutUseCase
+        )
+    )
     val isLoggedIn = mainViewModel.isLoggedIn.collectAsState(initial = false).value
 
     ModalDrawer(
@@ -237,7 +242,7 @@ fun NavigationHost() {
                         DetailsScreen(
                             rental = rental,
                             mainViewModel = mainViewModel,
-                            onDeleteClick = { /* Logica per eliminare */ }
+                            onDeleteClick = { navController.navigate(Routes.Home) },
                         )
                     }
                 }

@@ -28,9 +28,6 @@ class RetrofitClient(
         val originalRequest: Request = chain.request()
         val token: String? = tokenManager.getToken()
 
-        // Log del token
-        println("Token: $token")
-
         // Log dei dati della richiesta
         val requestBody = originalRequest.body
         if (requestBody != null) {
