@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,13 +18,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.corsolp.domain.models.RentalTypeEnum
 import com.corsolp.uicompose.R
@@ -44,6 +40,8 @@ fun DetailsScreen(
     val isAdmin = mainViewModel.isAdmin()
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
+    val contactMessageEmail = stringResource(R.string.contact_message_email)
+    val contactMessagePhone = stringResource(R.string.contact_message_phone)
 
     // FLAGS per mostrare snackbar
     var showLoginSnackbarForEmail by remember { mutableStateOf(false) }
@@ -53,21 +51,21 @@ fun DetailsScreen(
     // EFFETTI LATERALI sicuri
     if (showLoginSnackbarForEmail) {
         LaunchedEffect(scaffoldState.snackbarHostState) {
-            scaffoldState.snackbarHostState.showSnackbar("Effettua il login per contattare")
+            scaffoldState.snackbarHostState.showSnackbar(contactMessageEmail)
             showLoginSnackbarForEmail = false
         }
     }
 
     if (showLoginSnackbarForPhone) {
         LaunchedEffect(scaffoldState.snackbarHostState) {
-            scaffoldState.snackbarHostState.showSnackbar("Effettua il login per chiamare")
+            scaffoldState.snackbarHostState.showSnackbar(contactMessagePhone)
             showLoginSnackbarForPhone = false
         }
     }
 
     if (errorMessageState != null) {
         LaunchedEffect(errorMessageState) {
-            scaffoldState.snackbarHostState.showSnackbar("Errore: $errorMessageState")
+            scaffoldState.snackbarHostState.showSnackbar("Error: $errorMessageState")
             errorMessageState = null // Resetta lo stato dopo aver mostrato lo Snackbar
         }
     }
@@ -121,7 +119,7 @@ fun DetailsScreen(
                                     .padding(dimensionResource(R.dimen.spacing_small))
                             ) {
                                 Text(
-                                    text = "${rental.price} €",
+                                    text = "${rental.price} €/${stringResource(R.string.month)}",
                                     style = TextStyle(
                                         fontSize = dimensionResource(R.dimen.txt_size_caption).value.sp,
                                         fontWeight = FontWeight.Bold,
@@ -134,7 +132,9 @@ fun DetailsScreen(
                         Spacer(Modifier.height(dimensionResource(R.dimen.spacing_small)))
 
                         Text(
-                            text = "Stanze: ${rental.rooms}, mq: ${rental.surface}, piano: ${rental.floor}",
+                            text = "${stringResource(R.string.rooms)}: ${rental.rooms}, " +
+                                    "${stringResource(R.string.squere_meters)} ${rental.surface}, " +
+                                    "${stringResource(R.string.floor)}: ${rental.floor}",
                             style = TextStyle(
                                 fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
                                 fontWeight = FontWeight.Normal,
@@ -185,7 +185,7 @@ fun DetailsScreen(
                             Icon(Icons.Default.Email, contentDescription = null, tint = colorResource(R.color.white))
                             Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                             Text(
-                                text = "Contatta",
+                                text = stringResource(R.string.contact),
                                 style = TextStyle(
                                     color = colorResource(R.color.white),
                                 )
@@ -209,7 +209,7 @@ fun DetailsScreen(
                             Icon(Icons.Default.Phone, contentDescription = null, tint = colorResource(R.color.white))
                             Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                             Text(
-                                text = "Chiama",
+                                text = stringResource(R.string.call),
                                 style = TextStyle(
                                     color = colorResource(R.color.white),
                                 )
@@ -238,7 +238,7 @@ fun DetailsScreen(
                             )
                             Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                             Text(
-                                text = "Mappa"
+                                text = "Maps"
                             )
                         }
 
@@ -261,7 +261,7 @@ fun DetailsScreen(
                                 Icon(Icons.Default.Delete, contentDescription = null, tint = colorResource(R.color.white))
                                 Spacer(Modifier.width(dimensionResource(R.dimen.spacing_small)))
                                 Text(
-                                    text = "Elimina",
+                                    text = stringResource(R.string.delete),
                                     style = TextStyle(
                                         color = colorResource(R.color.white),
                                     )

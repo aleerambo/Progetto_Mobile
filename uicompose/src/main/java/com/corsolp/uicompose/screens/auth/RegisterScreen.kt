@@ -13,7 +13,6 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,13 +25,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.corsolp.uicompose.MainViewModel
 import com.corsolp.uicompose.R
 
 @Composable
 fun RegisterScreen(
-    viewModel: AuthViewModel,
+    mainViewModel: MainViewModel,
+    authViewModel: AuthViewModel,
     onRegisterSuccess: () -> Unit,
     onBackToLogin: () -> Unit // Callback per tornare al login
 ) {
@@ -41,7 +41,7 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val authState by viewModel.authState.collectAsStateWithLifecycle()
+    val authState by authViewModel.authState.collectAsStateWithLifecycle()
     var showDialog by remember { mutableStateOf(false) }
     var dialogMessage by remember { mutableStateOf("") }
 
@@ -53,6 +53,7 @@ fun RegisterScreen(
             showDialog = true
             if (it.isSuccess) {
                 dialogMessage = registerSuccessMessage
+                mainViewModel.logout()
                 onRegisterSuccess()
             } else {
                 dialogMessage = registerFailedMessage
@@ -104,7 +105,7 @@ fun RegisterScreen(
         )
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
         Button(
-            onClick = { viewModel.register(name, surname, phone, email, password) },
+            onClick = { authViewModel.register(name, surname, phone, email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.register))

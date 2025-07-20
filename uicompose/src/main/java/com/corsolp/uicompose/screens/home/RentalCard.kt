@@ -1,7 +1,6 @@
 package com.corsolp.uicompose.screens.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.corsolp.domain.models.Rental
 import com.corsolp.domain.models.RentalTypeEnum
@@ -78,7 +76,7 @@ fun RentalCard(
                         .background(colorResource(R.color.green))
                 ) {
                     Text(
-                        text = "${rental.price}€",
+                        text = "${rental.price}€/${stringResource(R.string.month)}",
                         modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)),
                         style = TextStyle(
                             fontSize = dimensionResource(R.dimen.txt_size_caption).value.sp,
@@ -90,7 +88,9 @@ fun RentalCard(
             }
             // Eventuali dettagli aggiuntivi
             Text(
-                text = "Stanze: ${rental.rooms}, mq: ${rental.surface}, piano: ${rental.floor}",
+                text = "${stringResource(R.string.rooms)}: ${rental.rooms}, " +
+                        "${stringResource(R.string.squere_meters)} ${rental.surface}, " +
+                        "${stringResource(R.string.floor)}: ${rental.floor}",
                 modifier = Modifier.padding(dimensionResource(R.dimen.spacing_small)),
                 style = TextStyle(
                     fontSize = dimensionResource(R.dimen.txt_size_normal).value.sp,
@@ -113,7 +113,6 @@ fun RentalCardPreview() {
             rooms = 3,
             surface = 80,
             floor = 2,
-            services = listOf("WiFi", "Parcheggio", "Piscina"),
             price = 700.0,
             favorite = false,
             type = RentalTypeEnum.APARTMENT,

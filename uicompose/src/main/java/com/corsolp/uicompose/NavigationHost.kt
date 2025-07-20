@@ -29,7 +29,6 @@ import com.corsolp.uicompose.screens.create.CreateRentalViewModelFactory
 import com.corsolp.uicompose.screens.details.DetailsScreen
 import com.corsolp.uicompose.screens.home.HomeScreen
 import com.corsolp.uicompose.screens.home.HomeViewModelFactory
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -41,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -95,7 +95,7 @@ fun NavigationHost() {
                     }
                     navController.navigate(Routes.Home)
                 }) {
-                    Text("Homepage")
+                    Text(stringResource(R.string.homepage_menu))
                 }
                 Button(onClick = {
                     scope.launch {
@@ -103,7 +103,7 @@ fun NavigationHost() {
                     }
                     navController.navigate(Routes.News)
                 }) {
-                    Text("News")
+                    Text(stringResource(R.string.news_menu))
                 }
                 Button(onClick = {
                     scope.launch {
@@ -111,7 +111,7 @@ fun NavigationHost() {
                     }
                     navController.navigate(Routes.Guide)
                 }) {
-                    Text("Guida alla ricerca")
+                    Text(stringResource(R.string.guide_menu))
                 }
                 Button(onClick = {
                     scope.launch {
@@ -119,7 +119,7 @@ fun NavigationHost() {
                     }
                     navController.navigate(Routes.AboutUs)
                 }) {
-                    Text("Chi siamo")
+                    Text(stringResource(R.string.about_us))
                 }
                 Button(onClick = {
                     scope.launch {
@@ -127,7 +127,7 @@ fun NavigationHost() {
                     }
                     navController.navigate(Routes.Contact)
                 }) {
-                    Text("Contatti")
+                    Text(stringResource(R.string.contact_us))
                 }
                 if (isLoggedIn) {
                     Button(
@@ -138,7 +138,7 @@ fun NavigationHost() {
                             navController.navigate(Routes.CreateRental)
                         },
                     ) {
-                        Text("Crea Annuncio")
+                        Text(stringResource(R.string.create_post))
                     }
                 }
                 Button(
@@ -274,12 +274,10 @@ fun NavigationHost() {
                         viewModel = viewModel(
                             factory = CreateRentalViewModelFactory(
                                 UseCaseProvider.createRentalPostUseCase,
-                                UseCaseProvider.fetchServiceListUseCase,
                                 UseCaseProvider.fetchNeighborhoodListUseCase,
                                 UseCaseProvider.fetchRentalTypeListUseCase
                             )
                         ),
-                        onImageSelected = { /* Logica per gestire l'immagine */ },
                         onPostCreated = {
                             navController.navigate(Routes.Home) { popUpTo(Routes.Home) { inclusive = true } }
                         }
@@ -306,7 +304,13 @@ fun NavigationHost() {
                 }
                 composable(Routes.Register) {
                     RegisterScreen(
-                        viewModel = viewModel(
+                        mainViewModel = viewModel(
+                            factory = MainViewModelFactory(
+                                UseCaseProvider.deleteRentalPostUseCase,
+                                UseCaseProvider.logoutUseCase
+                            )
+                        ),
+                        authViewModel = viewModel(
                             factory = AuthViewModelFactory(
                                 UseCaseProvider.loginUseCase,
                                 UseCaseProvider.registerUseCase
@@ -328,23 +332,6 @@ fun NavigationHost() {
         }
     }
 }
-
-@Serializable
-data object Home
-
-@Serializable
-data class DetailsScreen(
-    val rentalJsonString: String
-)
-
-@Serializable
-data object Guide
-
-@Serializable
-data object AboutUs
-
-@Serializable
-data object Contact
 
 object Routes {
     const val Home = "home"

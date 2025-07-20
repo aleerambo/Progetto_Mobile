@@ -1,22 +1,19 @@
 package com.corsolp.uicompose.screens.create
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -27,17 +24,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.corsolp.uicompose.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 
 @Composable
 fun CreateRentalScreen(
     viewModel: CreateRentalViewModel,
-    onImageSelected: (Uri) -> Unit,
     onPostCreated: () -> Unit
 ) {
-    val services by viewModel.services.collectAsStateWithLifecycle()
     val neighborhood by viewModel.neighborhood.collectAsStateWithLifecycle()
     val creationState by viewModel.creationState.collectAsStateWithLifecycle()
     val rentalTypes by viewModel.rentalTypes.collectAsStateWithLifecycle()
@@ -51,10 +49,8 @@ fun CreateRentalScreen(
     var numberOfTenants by remember { mutableStateOf("") }
     var minContract by remember { mutableStateOf("") }
     var maxContract by remember { mutableStateOf("") }
-    var selectedServices by remember { mutableStateOf<List<Int>>(emptyList()) }
     var selectedArea by remember { mutableStateOf<Int?>(null) }
     var selectedType by remember { mutableStateOf<Int?>(null) }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
     var isAreaDropdownExpanded by remember { mutableStateOf(false) }
     var isTypeDropdownExpanded by remember { mutableStateOf(false) }
 
@@ -65,149 +61,145 @@ fun CreateRentalScreen(
         TextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Descrizione") },
+            label = { Text(stringResource(R.string.description)) },
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = address,
             onValueChange = { address = it },
-            label = { Text("Indirizzo") },
+            label = { Text(stringResource(R.string.address)) },
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = price,
             onValueChange = { price = it },
-            label = { Text("Prezzo al mese") },
+            label = { Text(stringResource(R.string.price_month)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = rooms,
             onValueChange = { rooms = it },
-            label = { Text("Locali") },
+            label = { Text(stringResource(R.string.rooms)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = squareMeters,
             onValueChange = { squareMeters = it },
-            label = { Text("Metri quadri") },
+            label = { Text(stringResource(R.string.surface)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = floor,
             onValueChange = { floor = it },
-            label = { Text("Piano") },
+            label = { Text(stringResource(R.string.floor)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = numberOfTenants,
             onValueChange = { numberOfTenants = it },
-            label = { Text("Numero di inquilini") },
+            label = { Text(stringResource(R.string.number_of_tenants)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = minContract,
             onValueChange = { minContract = it },
-            label = { Text("Contratto minimo (mesi)") },
+            label = { Text(stringResource(R.string.min_contract)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = maxContract,
             onValueChange = { maxContract = it },
-            label = { Text("Contratto massimo (mesi)") },
+            label = { Text(stringResource(R.string.max_contract)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
 
         // Dropdown per le aree
-        TextField(
-            value = selectedArea?.let { neighborhood.find { it.id == selectedArea }?.name } ?: "",
-            onValueChange = {},
-            label = { Text("Seleziona Area") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { isAreaDropdownExpanded = true },
-            readOnly = true
-        )
-        DropdownMenu(
-            expanded = isAreaDropdownExpanded,
-            onDismissRequest = { isAreaDropdownExpanded = false }
-        ) {
-            neighborhood.forEach { area ->
-                DropdownMenuItem(onClick = {
-                    selectedArea = area.id
-                    isAreaDropdownExpanded = false
-                }) {
-                    Text(area.name)
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = selectedArea?.let { selectedId ->
+                    neighborhood.find { it.id == selectedId }?.name
+                } ?: "",
+                onValueChange = {},
+                label = { Text(stringResource(R.string.select_neighborhood)) },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isAreaDropdownExpanded = !isAreaDropdownExpanded }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Dropdown"
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isAreaDropdownExpanded = !isAreaDropdownExpanded }
+            )
+
+            DropdownMenu(
+                expanded = isAreaDropdownExpanded,
+                onDismissRequest = { isAreaDropdownExpanded = false },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                neighborhood.forEach { area ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedArea = area.id
+                            isAreaDropdownExpanded = false
+                            println("Selected area: ${area.name} with ID: ${area.id}")
+                        }
+                    ) {
+                        Text(text = area.name)
+                    }
                 }
             }
         }
 
         // Dropdown per le tipologie
-        TextField(
-            value = selectedType?.let { rentalTypes.find { it.id == selectedType }?.name } ?: "",
-            onValueChange = {},
-            label = { Text("Seleziona Tipologia") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { isTypeDropdownExpanded = true },
-            readOnly = true
-        )
-        DropdownMenu(
-            expanded = isTypeDropdownExpanded,
-            onDismissRequest = { isTypeDropdownExpanded = false }
-        ) {
-            rentalTypes.forEach { type ->
-                DropdownMenuItem(onClick = {
-                    selectedType = type.id
-                    isTypeDropdownExpanded = false
-                }) {
-                    Text(type.name)
-                }
-            }
-        }
-
-        // Checklist per i servizi
-        services.forEach { service ->
-            Row {
-                Checkbox(
-                    checked = selectedServices.contains(service.id),
-                    onCheckedChange = {
-                        selectedServices = if (it) {
-                            selectedServices + service.id
-                        } else {
-                            selectedServices - service.id
-                        }
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = selectedType?.let { selectedId ->
+                    rentalTypes.find { it.id == selectedId }?.name
+                } ?: "",
+                onValueChange = {},
+                label = { Text(stringResource(R.string.select_type)) },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { isTypeDropdownExpanded = !isTypeDropdownExpanded }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = "Dropdown"
+                        )
                     }
-                )
-                Text(service.name)
-            }
-        }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { isTypeDropdownExpanded = !isTypeDropdownExpanded }
+            )
 
-        // Pulsante per selezionare immagine
-        val imagePickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.data?.let { uri ->
-                    imageUri = uri // Aggiorna lo stato con l'URI dell'immagine selezionata
-                    onImageSelected(uri)
+            DropdownMenu(
+                expanded = isTypeDropdownExpanded,
+                onDismissRequest = { isTypeDropdownExpanded = false },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                rentalTypes.forEach { type ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedType = type.id
+                            isTypeDropdownExpanded = false
+                            println("Selected type: ${type.name} with ID: ${type.id}")
+                        }
+                    ) {
+                        Text(text = type.name)
+                    }
                 }
             }
-        }
-
-        Button(onClick = {
-            val intent = Intent(Intent.ACTION_PICK).apply {
-                type = "image/*"
-            }
-            imagePickerLauncher.launch(intent)
-        }) {
-            Text("Carica immagine")
         }
 
         // Pulsante per creare l'annuncio
@@ -221,7 +213,6 @@ fun CreateRentalScreen(
                     squareMeters = squareMeters.toIntOrNull() ?: 0,
                     floor = floor.toIntOrNull() ?: 0,
                     address = address,
-                    selectedServices = selectedServices.joinToString(prefix = "[", postfix = "]"),
                     type = selectedType ?: 1,
                     numberOfTenants = numberOfTenants.toIntOrNull() ?: 0,
                     minContract = minContract.toIntOrNull() ?: 0,
@@ -229,7 +220,7 @@ fun CreateRentalScreen(
                 )
             }
         ) {
-            Text("Crea Annuncio")
+            Text(stringResource(R.string.create_post))
         }
 
         println(creationState)
@@ -240,7 +231,7 @@ fun CreateRentalScreen(
                 onPostCreated()
             } else {
                 Text(
-                    text = "Errore durante la creazione: ${creationState!!.exceptionOrNull()?.message}",
+                    text = "Error: ${creationState!!.exceptionOrNull()?.message}",
                     color = Color.Red
                 )
             }

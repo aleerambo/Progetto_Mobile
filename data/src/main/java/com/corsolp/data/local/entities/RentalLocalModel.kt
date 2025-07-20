@@ -11,7 +11,6 @@ data class RentalLocalModel(
     val rooms: Int,
     val surface: Int,
     val floor: Int,
-    val services: String,
     val price: Double,
     val type: String,
     val phoneNumber: String,

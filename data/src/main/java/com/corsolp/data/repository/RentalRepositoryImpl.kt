@@ -1,7 +1,6 @@
 package com.corsolp.data.repository
 
 import android.content.Context
-import android.util.Log
 import com.corsolp.data.local.db.AppDatabase
 import com.corsolp.data.local.entities.NewsLocalModel
 import com.corsolp.data.local.entities.RentalLocalModel
@@ -217,7 +216,6 @@ class RentalRepositoryImpl(
         squareMeters: Int,
         floor: Int,
         address: String,
-        selectedServices: String,
         type: Int,
         numberOfTenants: Int,
         minContract: Int,
@@ -231,7 +229,6 @@ class RentalRepositoryImpl(
             squareMeters = squareMeters,
             floor = floor,
             address = address,
-            selectedServices = selectedServices,
             type = type,
             numberOfTenants = numberOfTenants,
             minContract = minContract,
@@ -259,7 +256,6 @@ class RentalRepositoryImpl(
         squareMeters: Int,
         floor: Int,
         address: String,
-        selectedServices: List<Int>,
         type: Int,
         numberOfTenants: Int,
         minContract: Int,
@@ -275,7 +271,6 @@ class RentalRepositoryImpl(
                 squareMeters      = squareMeters,
                 floor             = floor,
                 address           = address,
-                selectedServices  = selectedServices.toTypedArray(),
                 type              = type,
                 numberOfTenants   = numberOfTenants,
                 minContract       = minContract,
@@ -400,7 +395,6 @@ class RentalRepositoryImpl(
             rooms = this.locali ?: 0,
             surface = this.mq ?: 0,
             floor = this.piano ?: 0,
-            services = this.servizi?.split(',') ?: emptyList(),
             price = this.prezzo?.toDoubleOrNull() ?: 0.0,
             favorite = favorite,
             type = rentalTypeEnum,
@@ -431,7 +425,6 @@ class RentalRepositoryImpl(
             rooms = this.locali ?: 0,
             surface = this.mq ?: 0,
             floor = this.piano ?: 0,
-            services = emptyList(),
             price = this.prezzo?.toDoubleOrNull() ?: 0.0,
             favorite = favorite,
             type = rentalTypeEnum,
@@ -449,7 +442,6 @@ class RentalRepositoryImpl(
             rooms = this.locali ?: 0,
             surface = this.mq ?: 0,
             floor = this.piano ?: 0,
-            services = this.servizi?.split(',') ?: emptyList(),
             price = this.prezzo?.toDoubleOrNull() ?: 0.0,
             favorite = favorite,
             type = when (this.tipologia?.lowercase()) {
@@ -489,7 +481,6 @@ class RentalRepositoryImpl(
         rooms = rooms,
         surface = surface,
         floor = floor,
-        services = services.split(",").map { it.trim() },
         price = price,
         favorite = favorite,
         type = when (type.lowercase()) {
@@ -510,7 +501,6 @@ class RentalRepositoryImpl(
         rooms = rooms,
         surface = surface,
         floor = floor,
-        services = services.joinToString(","),
         price = price,
         favorite = favorite,
         type = when (type) {

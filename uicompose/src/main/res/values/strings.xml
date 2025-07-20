@@ -3,6 +3,9 @@
     <string name="room">Room</string>
     <string name="apartment">Apartment</string>
     <string name="bed">Bed Space</string>
+    <string name="homepage_menu">Homepage</string>
+    <string name="news_menu">News</string>
+    <string name="guide_menu">Guide to search</string>
     <string name="about_us">Who we are</string>
     <string name="about_us_text">
         Welcome to StudentHome!\n\nWe are a platform created by students for students, with the goal of simplifying the search for university housing. Our dream? To create a one-stop shop for finding apartments, rooms, and beds quickly, safely, and reliably.\n\nOn StudentHome, you\'ll find only listings designed with student needs in mind, with special offers and authentic reviews to help you make the right choice. We believe in the power of sharing and transparency: that\'s why we focus on an active community, where home seekers and landlords can connect directly.\n\nWhether you\'re looking for your first apartment or a cozy room near your university, we\'re here to make the process simple and stress-free. StudentHome is your new home… before your next home!
@@ -37,4 +40,23 @@
     <string name="register_success">Registration successful!</string>
     <string name="register_failed">Registration failed. Please try again.</string>
     <string name="alredy_registered">Already registered? Click here and</string>
+    <string name="create_post">Create post</string>
+    <string name="rooms">Rooms</string>
+    <string name="squere_meters">mq:</string>
+    <string name="floor">Floor</string>
+    <string name="contact">Contact</string>
+    <string name="call">Call</string>
+    <string name="delete">Delete</string>
+    <string name="contact_message_email">Log in to contact</string>
+    <string name="contact_message_phone">Log in to call</string>
+    <string name="month">Month</string>
+    <string name="description">Description</string>
+    <string name="address">Address</string>
+    <string name="price_month">Price per month</string>
+    <string name="surface">Squere meters</string>
+    <string name="number_of_tenants">Number of tenants</string>
+    <string name="min_contract">Min contract (months)</string>
+    <string name="max_contract">Max contract (months)</string>
+    <string name="select_neighborhood">Select neighborhood</string>
+    <string name="select_type">Select type</string>
 </resources>

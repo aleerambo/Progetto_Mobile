@@ -3,6 +3,9 @@
     <string name="room">Stanza</string>
     <string name="apartment">Appartamento</string>
     <string name="bed">Posto letto</string>
+    <string name="homepage_menu">Homepage</string>
+    <string name="news_menu">News</string>
+    <string name="guide_menu">Guida alla ricerca</string>
     <string name="about_us">Chi siamo</string>
     <string name="about_us_text">
         Benvenuto su StudentHome!\n\nSiamo una piattaforma creata da studenti per studenti, con l\'obiettivo di semplificare la ricerca di alloggi universitari. Il nostro sogno? Creare un punto di riferimento unico per trovare appartamenti, camere e posti letto in modo rapido, sicuro e affidabile.\n\nSu StudentHome troverai solo inserzioni pensate per le esigenze degli studenti, con offerte speciali e recensioni autentiche per aiutarti a fare la scelta giusta. Crediamo nel potere della condivisione e della trasparenza: per questo mettiamo al centro una community attiva, dove chi cerca casa e chi la offre può entrare in contatto diretto.\n\nChe tu stia cercando il tuo primo appartamento o una stanza accogliente vicino all’università, siamo qui per rendere il processo semplice e senza stress. StudentHome è la tua nuova casa… prima della tua prossima casa!
@@ -37,4 +40,23 @@
     <string name="register_success">Registrazione avvenuta con successo!</string>
     <string name="register_failed">Registrazione fallita. Riprova.</string>
     <string name="alredy_registered">Sei già iscritto? Clicca qui e</string>
+    <string name="create_post">Crea annuncio</string>
+    <string name="rooms">Stanze</string>
+    <string name="squere_meters">mq:</string>
+    <string name="floor">Piano</string>
+    <string name="contact">Contatta</string>
+    <string name="call">Chiama</string>
+    <string name="delete">Elimina</string>
+    <string name="contact_message_email">Effettua il login per contattare</string>
+    <string name="contact_message_phone">Effettua il login per chiamare</string>
+    <string name="month">Mese</string>
+    <string name="description">Descrizione</string>
+    <string name="address">Indirizzo</string>
+    <string name="price_month">Prezzo al mese</string>
+    <string name="surface">Metri quadrati</string>
+    <string name="number_of_tenants">Numero di inquilini</string>
+    <string name="min_contract">Contratto minimo (mesi)</string>
+    <string name="max_contract">Contratto massimo (mesi)</string>
+    <string name="select_neighborhood">Seleziona Area</string>
+    <string name="select_type">Seleziona Tipologia</string>
 </resources>

@@ -34,7 +34,6 @@ class MainViewModel(
     }
 
     fun logout() {
-        println("MainViewModel: logout() CHIAMATO")
         viewModelScope.launch {
             val result = logoutUseCase()
             if (result.isSuccess) {
@@ -42,7 +41,7 @@ class MainViewModel(
                 _isLoggedIn.value = false
             } else {
                 // Gestisci eventuali errori di logout, ad esempio log o notifiche
-                val errorMessage = result.exceptionOrNull()?.message ?: "Errore sconosciuto durante il logout"
+                val errorMessage = result.exceptionOrNull()?.message ?: "Error during logout"
                 println(errorMessage)
             }
         }
@@ -58,7 +57,7 @@ class MainViewModel(
             if (result.isSuccess) {
                 onSuccess()
             } else {
-                onError(result.exceptionOrNull()?.message ?: "Errore sconosciuto")
+                onError(result.exceptionOrNull()?.message ?: "Error deleting rental post")
             }
         }
     }

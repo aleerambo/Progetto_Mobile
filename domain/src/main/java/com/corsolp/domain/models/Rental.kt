@@ -17,7 +17,6 @@ data class Rental(
     val rooms: Int,
     val surface: Int,
     val floor: Int,
-    val services: List<String>,
     val price: Double,
     val favorite: Boolean,
     val type: RentalTypeEnum,

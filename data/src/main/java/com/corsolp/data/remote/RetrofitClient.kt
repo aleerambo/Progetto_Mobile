@@ -33,7 +33,6 @@ class RetrofitClient(
         if (requestBody != null) {
             val buffer = okio.Buffer()
             requestBody.writeTo(buffer)
-            println("Request Body: ${buffer.readUtf8()}")
         }
 
         // Se non c’è token, procedo come prima
